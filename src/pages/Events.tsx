@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -213,7 +212,17 @@ const Events = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredUpcomingEvents.map((event) => (
                   <Link to={`/events/${event.id}`} key={event.id}>
-                    <EventCard event={event} />
+                    <EventCard
+                      id={event.id}
+                      title={event.title}
+                      date={event.date}
+                      time={event.time}
+                      location={event.location}
+                      image={event.image}
+                      category={event.category}
+                      organizer={event.organizer}
+                      attendees={event.attendees}
+                    />
                   </Link>
                 ))}
               </div>
@@ -230,7 +239,17 @@ const Events = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPastEvents.map((event) => (
                   <Link to={`/events/${event.id}`} key={event.id}>
-                    <EventCard event={event} />
+                    <EventCard
+                      id={event.id}
+                      title={event.title}
+                      date={event.date}
+                      time={event.time}
+                      location={event.location}
+                      image={event.image}
+                      category={event.category}
+                      organizer={event.organizer}
+                      attendees={event.attendees}
+                    />
                   </Link>
                 ))}
               </div>
