@@ -8,7 +8,6 @@ import {
   Clock, 
   Filter, 
   Plus, 
-  Search, 
   Users 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -35,13 +34,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 
-// Import the uploaded images
-const musicEventImage = "public/lovable-uploads/2311f71d-3e0f-439e-80b6-47b7777c2386.png";
-const sportsEventImage = "public/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png";
-const techEventImage = "public/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png";
-const culturalEventImage = "public/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png";
-const academicEventImage = "public/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png";
-
 // Sample chart data
 const eventActivityData = [
   { name: "Jan", events: 15, attendees: 850 },
@@ -56,27 +48,29 @@ const eventActivityData = [
 const events = [
   {
     id: "1",
-    title: "Arijit Singh Live Concert",
-    date: "April 15, 2025",
-    time: "7:00 PM",
-    location: "University Auditorium",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Cultural Committee",
-    attendees: 1250,
-    featured: true
-  },
-  {
-    id: "2",
-    title: "Inter-College Cricket Tournament",
-    date: "March 10-15, 2025",
+    title: "CPL (Chanakya Premier League)",
+    date: "April 10-24, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: sportsEventImage,
+    image: "/lovable-uploads/78c51d2b-62e0-4f69-a05b-b457cf03c55f.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
-    featured: false
+    featured: true,
+    price: "₹200"
+  },
+  {
+    id: "2",
+    title: "Arijit Singh Live Concert",
+    date: "April 30, 2025",
+    time: "7:00 PM",
+    location: "University Auditorium",
+    image: "/lovable-uploads/8375f1c6-6533-40ff-b2ef-df2485f63196.png",
+    category: "Music",
+    organizer: "Cultural Committee",
+    attendees: 1250,
+    featured: false,
+    price: "₹500"
   },
   {
     id: "3",
@@ -84,11 +78,12 @@ const events = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: techEventImage,
+    image: "/lovable-uploads/f4058195-637f-4050-b977-658d07522ace.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
-    featured: false
+    featured: false,
+    price: "Free"
   },
   {
     id: "4",
@@ -96,11 +91,12 @@ const events = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: culturalEventImage,
+    image: "/lovable-uploads/b9903d66-1f57-4615-8d26-e453321df716.png",
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
-    featured: false
+    featured: false,
+    price: "₹100"
   },
   {
     id: "5",
@@ -108,11 +104,38 @@ const events = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: academicEventImage,
+    image: "/lovable-uploads/5cb5426c-342a-47a2-a5e4-bf0c6d371335.png",
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
-    featured: false
+    featured: false,
+    price: "Free"
+  },
+  {
+    id: "6",
+    title: "Technology Career Fair",
+    date: "May 20, 2025",
+    time: "10:00 AM",
+    location: "University Convention Center",
+    image: "/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png",
+    category: "Tech",
+    organizer: "Career Services",
+    attendees: 720,
+    featured: false,
+    price: "Free"
+  },
+  {
+    id: "7",
+    title: "Spoken Word Poetry Night",
+    date: "April 25, 2025",
+    time: "6:30 PM",
+    location: "Student Center",
+    image: "/lovable-uploads/6173ca42-8b57-43dc-857e-c3a6a6cd6bb1.png",
+    category: "Cultural",
+    organizer: "Literary Club",
+    attendees: 180,
+    featured: false,
+    price: "₹50"
   }
 ];
 
@@ -234,11 +257,10 @@ const Dashboard = () => {
               </TabsList>
               
               <div className="flex items-center gap-3">
-                <div className="relative hidden md:block">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+                <div className="hidden md:block">
                   <Input
                     placeholder="Search events..."
-                    className="pl-8 w-[250px]"
+                    className="w-[250px]"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -258,9 +280,11 @@ const Dashboard = () => {
                   </SelectContent>
                 </Select>
                 
-                <Button size="sm" className="bg-indian-primary hover:bg-indian-secondary">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Event
+                <Button size="sm" className="bg-indian-primary hover:bg-indian-secondary" asChild>
+                  <Link to="/create-event">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Event
+                  </Link>
                 </Button>
               </div>
             </div>

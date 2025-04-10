@@ -1,819 +1,574 @@
 
-import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import { 
-  ArrowLeft, 
   Calendar, 
   Clock, 
-  Download, 
-  ExternalLink, 
-  Heart, 
-  Info, 
+  Users, 
   MapPin, 
-  MessageSquare, 
-  QrCode, 
   Share2, 
-  Star, 
-  Ticket, 
-  UserPlus, 
-  Users 
+  Heart, 
+  Bookmark, 
+  ChevronLeft,
+  DollarSign,
+  Check
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import EventCard from "@/components/EventCard";
 
-// Import the uploaded images
-const musicEventImage = "public/lovable-uploads/2311f71d-3e0f-439e-80b6-47b7777c2386.png";
-const sportsEventImage = "public/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png";
-const techEventImage = "public/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png";
-const culturalEventImage = "public/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png";
-const academicEventImage = "public/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png";
-
-// Event data
-const events = [
+// Sample events data
+const eventsData = [
   {
     id: "1",
-    title: "Arijit Singh Live Concert",
-    date: "April 15, 2025",
-    time: "7:00 PM - 10:00 PM",
-    location: "University Auditorium",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Cultural Committee",
-    organizerLogo: "",
-    attendees: 1250,
+    title: "CPL (Chanakya Premier League)",
+    date: "April 10-24, 2025",
+    time: "9:00 AM",
+    location: "University Sports Complex",
+    image: "/lovable-uploads/78c51d2b-62e0-4f69-a05b-b457cf03c55f.png",
+    category: "Sports",
+    organizer: "Sports Committee",
+    attendees: 850,
     featured: true,
-    description: `Join us for an unforgettable evening as Arijit Singh, India's most beloved singer, performs live at our University Auditorium. Experience the magic of his soulful voice as he performs his greatest hits and new compositions.
-
-The concert promises to be a mesmerizing experience with state-of-the-art sound and lighting systems. Limited seats available, so register early to secure your spot.
-
-Refreshments will be provided, and merchandise will be available for purchase at the venue.`,
-    agenda: [
-      { time: "6:00 PM", activity: "Doors Open" },
-      { time: "6:30 PM", activity: "Opening Act: University Music Band" },
-      { time: "7:00 PM", activity: "Main Event: Arijit Singh Performance" },
-      { time: "9:30 PM", activity: "Meet & Greet (VIP Pass Holders Only)" },
-      { time: "10:00 PM", activity: "Event Concludes" }
+    price: "₹200",
+    description: "Get ready for the most exciting cricket tournament of the year! The Chanakya Premier League brings together the best cricketers from across colleges to compete in a thrilling format. Experience the excitement, team spirit, and competitive atmosphere as teams battle it out for the prestigious CPL trophy. With live commentary, refreshments, and prizes for spectators, this is an event you won't want to miss.",
+    contactEmail: "sports@chanakya.edu",
+    contactPhone: "+919541118287",
+    startDate: "April 10, 2025",
+    endDate: "April 24, 2025",
+    registrationEnd: "April 5, 2025",
+    maxAttendees: 1000,
+    venue: "University Sports Complex, Main Ground",
+    venueAddress: "Chanakya University, Rural Bangalore",
+    organizers: [
+      {
+        name: "Sports Committee",
+        role: "Main Organizer"
+      },
+      {
+        name: "Student Council",
+        role: "Co-organizer"
+      }
     ],
-    speakers: [
-      { name: "Arijit Singh", role: "Singer", image: "" },
-      { name: "Pritam Chakraborty", role: "Music Director", image: "" }
-    ],
-    registration: {
-      status: "open",
-      deadline: "April 10, 2025",
-      fee: "₹1,500 (General), ₹2,500 (VIP)"
-    },
-    contact: {
-      name: "Priya Mehta",
-      email: "cultural@university.edu",
-      phone: "+91 98765 43210"
-    }
+    speakers: [],
+    schedule: [
+      {
+        date: "April 10, 2025",
+        time: "9:00 AM",
+        title: "Opening Ceremony"
+      },
+      {
+        date: "April 10-22, 2025",
+        time: "Various",
+        title: "League Matches"
+      },
+      {
+        date: "April 23, 2025",
+        time: "3:00 PM",
+        title: "Semi-Finals"
+      },
+      {
+        date: "April 24, 2025",
+        time: "5:00 PM",
+        title: "Finals & Closing Ceremony"
+      }
+    ]
   },
   {
     id: "2",
-    title: "Inter-College Cricket Tournament",
-    date: "March 10-15, 2025",
-    time: "9:00 AM - 6:00 PM",
-    location: "University Sports Complex",
-    image: sportsEventImage,
-    category: "Sports",
-    organizer: "Sports Committee",
-    organizerLogo: "",
-    attendees: 850,
+    title: "Arijit Singh Live Concert",
+    date: "April 30, 2025",
+    time: "7:00 PM",
+    location: "University Auditorium",
+    image: "/lovable-uploads/8375f1c6-6533-40ff-b2ef-df2485f63196.png",
+    category: "Music",
+    organizer: "Cultural Committee",
+    attendees: 1250,
     featured: false,
-    description: "Annual inter-college cricket tournament featuring teams from all over the region.",
-    agenda: [],
-    speakers: [],
-    registration: {
-      status: "open",
-      deadline: "February 28, 2025",
-      fee: "₹2,000 per team"
-    },
-    contact: {
-      name: "Rahul Singh",
-      email: "sports@university.edu",
-      phone: "+91 97654 32109"
-    }
+    price: "₹500",
+    description: "Experience the magical voice of Arijit Singh live on campus! Join us for an unforgettable evening of soulful melodies and chart-topping hits performed by one of India's most beloved singers. The concert will feature a stunning light show, state-of-the-art sound, and an immersive musical experience. Limited tickets available, so book early!",
+    contactEmail: "cultural@chanakya.edu",
+    contactPhone: "+919541118287",
+    startDate: "April 30, 2025",
+    endDate: "April 30, 2025",
+    registrationEnd: "April 25, 2025",
+    maxAttendees: 2000,
+    venue: "University Grand Auditorium",
+    venueAddress: "Chanakya University, Rural Bangalore",
+    organizers: [
+      {
+        name: "Cultural Committee",
+        role: "Main Organizer"
+      },
+      {
+        name: "Music Club",
+        role: "Co-organizer"
+      }
+    ],
+    speakers: [
+      {
+        name: "Arijit Singh",
+        role: "Lead Performer"
+      }
+    ],
+    schedule: [
+      {
+        date: "April 30, 2025",
+        time: "6:00 PM",
+        title: "Doors Open"
+      },
+      {
+        date: "April 30, 2025",
+        time: "7:00 PM",
+        title: "Concert Begins"
+      },
+      {
+        date: "April 30, 2025",
+        time: "10:00 PM",
+        title: "Event Ends"
+      }
+    ]
   },
   {
     id: "3",
     title: "Annual Hackathon 2025",
     date: "May 5-6, 2025",
-    time: "8:00 AM - 8:00 PM",
+    time: "8:00 AM",
     location: "CS Department",
-    image: techEventImage,
+    image: "/lovable-uploads/f4058195-637f-4050-b977-658d07522ace.png",
     category: "Tech",
     organizer: "Technical Committee",
-    organizerLogo: "",
     attendees: 320,
     featured: false,
-    description: "48-hour coding challenge to solve real-world problems using technology.",
-    agenda: [],
-    speakers: [],
-    registration: {
-      status: "coming_soon",
-      deadline: "April 25, 2025",
-      fee: "Free"
-    },
-    contact: {
-      name: "Amit Kumar",
-      email: "tech@university.edu",
-      phone: "+91 95432 10987"
-    }
-  }
-];
-
-// Related events data
-const relatedEvents = [
+    price: "Free",
+    description: "Join the 24-hour coding marathon where creativity meets technology! The Annual Hackathon brings together programmers, designers, and innovators to develop solutions to real-world problems. With mentorship from industry experts, workshops, and amazing prizes, this is your chance to showcase your technical skills and innovative ideas. Open to all skill levels!",
+    contactEmail: "tech@chanakya.edu",
+    contactPhone: "+919541118287",
+    startDate: "May 5, 2025",
+    endDate: "May 6, 2025",
+    registrationEnd: "April 30, 2025",
+    maxAttendees: 400,
+    venue: "Computer Science Building, Innovation Lab",
+    venueAddress: "Chanakya University, Rural Bangalore",
+    organizers: [
+      {
+        name: "Technical Committee",
+        role: "Main Organizer"
+      },
+      {
+        name: "CS Department",
+        role: "Co-organizer"
+      }
+    ],
+    speakers: [
+      {
+        name: "Dr. Rajiv Kumar",
+        role: "Keynote Speaker"
+      },
+      {
+        name: "Priya Sharma",
+        role: "Industry Expert"
+      }
+    ],
+    schedule: [
+      {
+        date: "May 5, 2025",
+        time: "8:00 AM",
+        title: "Registration & Opening Ceremony"
+      },
+      {
+        date: "May 5, 2025",
+        time: "9:00 AM",
+        title: "Hackathon Begins"
+      },
+      {
+        date: "May 6, 2025",
+        time: "9:00 AM",
+        title: "Submissions Due"
+      },
+      {
+        date: "May 6, 2025",
+        time: "2:00 PM",
+        title: "Presentations & Judging"
+      },
+      {
+        date: "May 6, 2025",
+        time: "5:00 PM",
+        title: "Award Ceremony"
+      }
+    ]
+  },
+  {
+    id: "4",
+    title: "Classical Dance Competition",
+    date: "June 12, 2025",
+    time: "6:00 PM",
+    location: "Cultural Center",
+    image: "/lovable-uploads/b9903d66-1f57-4615-8d26-e453321df716.png",
+    category: "Cultural",
+    organizer: "Fine Arts Society",
+    attendees: 450,
+    price: "₹100",
+    description: "Celebrate the rich tapestry of Indian classical dance forms at our annual competition. Watch mesmerizing performances of Bharatanatyam, Kathak, Odissi, and more from talented dancers across universities. A panel of renowned judges will evaluate performances based on technique, expression, and presentation. Join us for an evening of grace, rhythm, and cultural heritage.",
+    contactEmail: "arts@chanakya.edu",
+    contactPhone: "+919541118287"
+  },
+  {
+    id: "5",
+    title: "Research Symposium",
+    date: "July 7-8, 2025",
+    time: "10:00 AM",
+    location: "Central Library",
+    image: "/lovable-uploads/5cb5426c-342a-47a2-a5e4-bf0c6d371335.png",
+    category: "Academic",
+    organizer: "Research Department",
+    attendees: 280,
+    price: "Free",
+    description: "Join the intellectual discourse at our Research Symposium where scholars present groundbreaking research across disciplines. Featuring keynote addresses from distinguished academics, panel discussions, and poster presentations, this event encourages cross-disciplinary collaboration and knowledge exchange. An excellent opportunity for students and faculty to showcase research and forge academic connections."
+  },
   {
     id: "7",
-    title: "AR Rahman Musical Evening",
-    date: "September 3, 2025",
-    time: "7:30 PM",
-    location: "Open Air Theatre",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Cultural Club",
-    attendees: 1500,
-    featured: true
+    title: "Technology Career Fair",
+    date: "May 20, 2025",
+    time: "10:00 AM",
+    location: "University Convention Center",
+    image: "/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png",
+    category: "Tech",
+    organizer: "Career Services",
+    attendees: 720,
+    price: "Free",
+    description: "Connect with top technology companies and startups at our annual Technology Career Fair. This event brings together employers seeking fresh talent and students looking for internships and job opportunities in the tech industry. Prepare your resume, practice your elevator pitch, and dress professionally for this chance to network with recruiters from leading organizations in the technology sector."
   },
   {
     id: "8",
-    title: "Shankar Mahadevan Fusion Concert",
-    date: "October 15, 2025",
-    time: "7:00 PM",
-    location: "University Auditorium",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Music Department",
-    attendees: 950,
-    featured: false
-  },
-  {
-    id: "9",
-    title: "Classical Music Workshop",
-    date: "November 10, 2025",
-    time: "10:00 AM",
-    location: "Music Room",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Fine Arts Society",
-    attendees: 120,
-    featured: false
+    title: "Spoken Word Poetry Night",
+    date: "April 25, 2025",
+    time: "6:30 PM",
+    location: "Student Center",
+    image: "/lovable-uploads/6173ca42-8b57-43dc-857e-c3a6a6cd6bb1.png",
+    category: "Cultural",
+    organizer: "Literary Club",
+    attendees: 180,
+    price: "₹50",
+    description: "Experience the power of words at our Spoken Word Poetry Night where emotions come alive through performance poetry. This intimate gathering showcases student poets expressing their thoughts on various themes from personal experiences to social issues. The evening includes open mic sessions for audience members to share their own poetry. A soulful event that celebrates the art of storytelling through poetic expression."
   }
 ];
 
 const EventDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  const [registered, setRegistered] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const { id } = useParams();
+  const [event, setEvent] = useState<any | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const { toast } = useToast();
   
-  // Find the current event data
-  const currentEvent = events.find(event => event.id === id) || events[0];
+  useEffect(() => {
+    // In a real app, we would fetch the event data from an API
+    const foundEvent = eventsData.find(e => e.id === id);
+    if (foundEvent) {
+      setEvent(foundEvent);
+    }
+    
+    // Check if user is already registered (demo only)
+    const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
+    if (registeredEvents.includes(id)) {
+      setIsRegistered(true);
+    }
+  }, [id]);
+  
+  const handleRegister = () => {
+    setIsRegistering(true);
+    
+    // Simulate API call with timeout
+    setTimeout(() => {
+      // Add to registered events in localStorage (demo only)
+      const registeredEvents = JSON.parse(localStorage.getItem("registeredEvents") || "[]");
+      localStorage.setItem("registeredEvents", JSON.stringify([...registeredEvents, id]));
+      
+      setIsRegistered(true);
+      setIsRegistering(false);
+      
+      toast({
+        title: "Registration successful!",
+        description: `You have successfully registered for ${event?.title}.`,
+      });
+    }, 1500);
+  };
+  
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: event?.title,
+        text: `Check out this event: ${event?.title}`,
+        url: window.location.href
+      })
+      .catch((error) => console.log('Error sharing', error));
+    } else {
+      toast({
+        title: "Sharing not supported",
+        description: "Web Share API is not supported in this browser.",
+      });
+    }
+  };
+  
+  if (!event) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Event not found</h1>
+            <p className="text-gray-600 mb-6">The event you're looking for doesn't exist or has been removed.</p>
+            <Button asChild>
+              <Link to="/events">Browse All Events</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
   
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar loggedIn={true} />
+      <Navbar />
       
       <main className="flex-1 bg-gray-50">
-        {/* Event Hero Section */}
-        <div className="relative h-[300px] md:h-[400px] overflow-hidden">
-          <img
-            src={currentEvent.image}
-            alt={currentEvent.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+        {/* Event Header */}
+        <div className="relative">
+          <div className="w-full h-64 md:h-96 bg-gray-300 overflow-hidden">
+            <img 
+              src={event.image} 
+              alt={event.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+          </div>
           
-          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 container mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Link to="/events" className="text-white hover:text-gray-200 flex items-center">
-                    <ArrowLeft className="w-4 h-4 mr-1" />
-                    Back to Events
-                  </Link>
-                  <span className="text-gray-300">|</span>
-                  <span className="px-2 py-1 text-xs rounded-full bg-white/20 text-white">
-                    {currentEvent.category}
+          <div className="absolute top-4 left-4">
+            <Button asChild variant="outline" size="sm" className="bg-white/80 backdrop-blur-sm">
+              <Link to="/events">
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Back to Events
+              </Link>
+            </Button>
+          </div>
+          
+          <div className="container mx-auto px-4 relative -mt-20">
+            <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 md:flex items-start gap-6">
+              <div className="w-full md:w-2/3">
+                <div className="flex flex-wrap gap-2 mb-3">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                    {event.category}
+                  </span>
+                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium flex items-center">
+                    <DollarSign className="w-3 h-3 mr-1" />
+                    {event.price}
                   </span>
                 </div>
                 
-                <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
-                  {currentEvent.title}
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  {event.title}
                 </h1>
                 
-                <div className="flex flex-wrap gap-x-4 gap-y-2 text-white/90 text-sm">
-                  <div className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-1.5" />
-                    <span>{currentEvent.date}</span>
+                <div className="flex flex-wrap gap-6 mb-6">
+                  <div className="flex items-center text-gray-600">
+                    <Calendar className="w-5 h-5 mr-2 text-indian-primary" />
+                    <span>{event.date}</span>
                   </div>
-                  <div className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1.5" />
-                    <span>{currentEvent.time}</span>
+                  
+                  <div className="flex items-center text-gray-600">
+                    <Clock className="w-5 h-5 mr-2 text-indian-primary" />
+                    <span>{event.time}</span>
                   </div>
-                  <div className="flex items-center">
-                    <MapPin className="w-4 h-4 mr-1.5" />
-                    <span>{currentEvent.location}</span>
+                  
+                  <div className="flex items-center text-gray-600">
+                    <MapPin className="w-5 h-5 mr-2 text-indian-primary" />
+                    <span>{event.location}</span>
                   </div>
-                  <div className="flex items-center">
-                    <Users className="w-4 h-4 mr-1.5" />
-                    <span>{currentEvent.attendees} attending</span>
+                  
+                  <div className="flex items-center text-gray-600">
+                    <Users className="w-5 h-5 mr-2 text-indian-primary" />
+                    <span>{event.attendees} attending</span>
                   </div>
+                </div>
+                
+                <div className="flex items-center gap-4 mb-6">
+                  <Avatar className="w-10 h-10 border">
+                    <AvatarFallback className="bg-indian-primary text-white">
+                      {event.organizer.split(" ").map((word: string) => word[0]).join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm text-gray-500">Organized by</p>
+                    <p className="font-medium">{event.organizer}</p>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-3">
+                  {isRegistered ? (
+                    <Button className="bg-green-600 hover:bg-green-700" disabled>
+                      <Check className="w-4 h-4 mr-2" />
+                      Registered
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="bg-indian-primary hover:bg-indian-secondary"
+                      onClick={handleRegister}
+                      disabled={isRegistering}
+                    >
+                      {isRegistering ? "Registering..." : "Register Now"}
+                    </Button>
+                  )}
+                  
+                  <Button variant="outline" onClick={handleShare}>
+                    <Share2 className="w-4 h-4 mr-2" />
+                    Share
+                  </Button>
+                  
+                  <Button variant="ghost" className="gap-2">
+                    <Heart className="w-4 h-4" />
+                    <span className="hidden sm:inline">Interested</span>
+                  </Button>
+                  
+                  <Button variant="ghost" className="gap-2">
+                    <Bookmark className="w-4 h-4" />
+                    <span className="hidden sm:inline">Save</span>
+                  </Button>
                 </div>
               </div>
               
-              <div className="flex flex-wrap gap-3">
-                <Button 
-                  variant="outline" 
-                  className="text-white border-white hover:bg-white/20 hover:text-white"
-                  onClick={() => setLiked(!liked)}
-                >
-                  <Heart className={`w-4 h-4 mr-2 ${liked ? "fill-red-500 text-red-500" : ""}`} />
-                  {liked ? "Saved" : "Save"}
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="text-white border-white hover:bg-white/20 hover:text-white"
-                >
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-                
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="bg-indian-primary hover:bg-indian-secondary">
-                      <Ticket className="w-4 h-4 mr-2" />
-                      Register Now
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Registration Confirmation</DialogTitle>
-                      <DialogDescription>
-                        You're about to register for the event: {currentEvent.title}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="py-4">
-                      <div className="rounded-lg border p-4 mb-4">
-                        <div className="font-medium">Event Details</div>
-                        <div className="text-sm text-gray-500 mt-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Calendar className="w-4 h-4" />
-                            <span>{currentEvent.date}</span>
-                          </div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <Clock className="w-4 h-4" />
-                            <span>{currentEvent.time}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            <span>{currentEvent.location}</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="rounded-lg border p-4">
-                        <div className="font-medium">Registration Fee</div>
-                        <div className="text-sm text-gray-500 mt-1">
-                          {currentEvent.registration.fee}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setRegistered(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        className="bg-indian-primary hover:bg-indian-secondary"
-                        onClick={() => {
-                          setRegistered(true);
-                        }}
-                      >
-                        Confirm Registration
-                      </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+              <div className="w-full md:w-1/3 mt-6 md:mt-0">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-3">Contact Information</h3>
+                  <div className="space-y-2">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Email:</span> {event.contactEmail || "support@evocu.edu"}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Phone:</span> {event.contactPhone || "+919541118287"}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         
+        {/* Event Description */}
         <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              <Tabs defaultValue="about">
-                <TabsList className="mb-6">
-                  <TabsTrigger value="about">About</TabsTrigger>
-                  <TabsTrigger value="agenda">Agenda</TabsTrigger>
-                  <TabsTrigger value="speakers">Speakers</TabsTrigger>
-                  <TabsTrigger value="attendees">Attendees</TabsTrigger>
-                  <TabsTrigger value="discussions">Discussions</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="about" className="mt-0">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <h2 className="text-xl font-semibold mb-4">Event Description</h2>
-                    <div className="prose prose-sm max-w-none text-gray-700">
-                      {currentEvent.description.split('\n\n').map((paragraph, index) => (
-                        <p key={index} className="mb-4">{paragraph}</p>
-                      ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="md:col-span-2">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">About This Event</h2>
+                <div className="prose max-w-none text-gray-600">
+                  <p>{event.description}</p>
+                </div>
+              </div>
+              
+              {event.schedule && event.schedule.length > 0 && (
+                <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Event Schedule</h2>
+                  <div className="space-y-4">
+                    {event.schedule.map((item: any, index: number) => (
+                      <div key={index} className="flex">
+                        <div className="mr-4 relative">
+                          <div className="w-3 h-3 rounded-full bg-indian-primary ring-4 ring-indigo-50"></div>
+                          {index < event.schedule.length - 1 && (
+                            <div className="absolute top-3 bottom-0 left-1.5 w-px bg-gray-200"></div>
+                          )}
+                        </div>
+                        <div className="pb-4">
+                          <p className="font-medium text-gray-900">{item.title}</p>
+                          <p className="text-sm text-gray-500">
+                            {item.date} • {item.time}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Event Details</h2>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-500 mb-1">Date and Time</p>
+                    <p className="font-medium">{event.date} • {event.time}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-gray-500 mb-1">Location</p>
+                    <p className="font-medium">{event.location}</p>
+                    <p className="text-sm text-gray-600">{event.venueAddress || "Chanakya University, Rural Bangalore"}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-gray-500 mb-1">Price</p>
+                    <p className="font-medium">{event.price}</p>
+                  </div>
+                  
+                  {event.registrationEnd && (
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Registration Deadline</p>
+                      <p className="font-medium">{event.registrationEnd}</p>
                     </div>
-                    
-                    <h3 className="text-lg font-semibold mt-8 mb-4">Event Details</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indian-softPurple flex items-center justify-center flex-shrink-0">
-                          <Calendar className="w-5 h-5 text-indian-primary" />
-                        </div>
-                        <div>
-                          <div className="font-medium">Date</div>
-                          <div className="text-gray-600">{currentEvent.date}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indian-softPurple flex items-center justify-center flex-shrink-0">
-                          <Clock className="w-5 h-5 text-indian-primary" />
-                        </div>
-                        <div>
-                          <div className="font-medium">Time</div>
-                          <div className="text-gray-600">{currentEvent.time}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indian-softPurple flex items-center justify-center flex-shrink-0">
-                          <MapPin className="w-5 h-5 text-indian-primary" />
-                        </div>
-                        <div>
-                          <div className="font-medium">Location</div>
-                          <div className="text-gray-600">{currentEvent.location}</div>
-                          <a href="#" className="text-indian-primary text-sm hover:underline">
-                            View Map
-                          </a>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-full bg-indian-softPurple flex items-center justify-center flex-shrink-0">
-                          <Ticket className="w-5 h-5 text-indian-primary" />
-                        </div>
-                        <div>
-                          <div className="font-medium">Registration Fee</div>
-                          <div className="text-gray-600">{currentEvent.registration.fee}</div>
-                          <div className="text-sm text-gray-500">
-                            Deadline: {currentEvent.registration.deadline}
-                          </div>
-                        </div>
-                      </div>
+                  )}
+                  
+                  {event.maxAttendees && (
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Capacity</p>
+                      <p className="font-medium">{event.maxAttendees} attendees</p>
                     </div>
-                    
-                    <h3 className="text-lg font-semibold mt-8 mb-4">Contact Information</h3>
-                    <div className="rounded-lg border p-4">
-                      <div className="flex items-center gap-3">
-                        <Avatar>
+                  )}
+                </div>
+              </div>
+              
+              {event.organizers && event.organizers.length > 0 && (
+                <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Organizers</h2>
+                  <div className="space-y-4">
+                    {event.organizers.map((org: any, index: number) => (
+                      <div key={index} className="flex items-center">
+                        <Avatar className="mr-3">
                           <AvatarFallback className="bg-indian-primary text-white">
-                            {currentEvent.contact.name.split(' ').map(n => n[0]).join('')}
+                            {org.name.split(" ").map((word: string) => word[0]).join("")}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="font-medium">{currentEvent.contact.name}</div>
-                          <div className="text-sm text-gray-500">Event Coordinator</div>
+                          <p className="font-medium">{org.name}</p>
+                          <p className="text-sm text-gray-500">{org.role}</p>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div className="flex items-center gap-2">
-                          <div className="text-sm text-gray-700">Email:</div>
-                          <a href={`mailto:${currentEvent.contact.email}`} className="text-sm text-indian-primary hover:underline">
-                            {currentEvent.contact.email}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="text-sm text-gray-700">Phone:</div>
-                          <a href={`tel:${currentEvent.contact.phone}`} className="text-sm text-indian-primary hover:underline">
-                            {currentEvent.contact.phone}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                </TabsContent>
-                
-                <TabsContent value="agenda" className="mt-0">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <h2 className="text-xl font-semibold mb-6">Event Schedule</h2>
-                    
-                    {currentEvent.agenda.length > 0 ? (
-                      <div className="relative">
-                        <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200"></div>
-                        
-                        <div className="space-y-8">
-                          {currentEvent.agenda.map((item, index) => (
-                            <div key={index} className="relative pl-10">
-                              <div className="absolute left-0 w-8 h-8 rounded-full bg-indian-softPurple flex items-center justify-center z-10">
-                                <div className="w-3 h-3 rounded-full bg-indian-primary"></div>
-                              </div>
-                              
-                              <div className="text-sm text-gray-500 mb-1">{item.time}</div>
-                              <div className="font-medium text-gray-900">{item.activity}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center py-10">
-                        <Info className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-1">Agenda Not Available</h3>
-                        <p className="text-gray-500">
-                          The detailed agenda for this event will be published soon.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="speakers" className="mt-0">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <h2 className="text-xl font-semibold mb-6">Event Speakers</h2>
-                    
-                    {currentEvent.speakers.length > 0 ? (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {currentEvent.speakers.map((speaker, index) => (
-                          <div key={index} className="flex items-start gap-4 p-4 rounded-lg border">
-                            <Avatar className="w-16 h-16">
-                              <AvatarFallback className="text-lg bg-indian-primary text-white">
-                                {speaker.name.split(' ').map(n => n[0]).join('')}
-                              </AvatarFallback>
-                            </Avatar>
-                            
-                            <div>
-                              <h3 className="font-semibold text-lg">{speaker.name}</h3>
-                              <p className="text-gray-500">{speaker.role}</p>
-                              
-                              <div className="flex items-center gap-2 mt-3">
-                                <Button variant="ghost" size="sm" className="h-8 px-2">
-                                  <ExternalLink className="w-4 h-4" />
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-8 px-2">
-                                  <UserPlus className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-10">
-                        <Info className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-1">No Speakers Listed</h3>
-                        <p className="text-gray-500">
-                          Information about speakers for this event will be updated soon.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="attendees" className="mt-0">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-xl font-semibold">Attendees ({currentEvent.attendees})</h2>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to="#invite">
-                          <UserPlus className="w-4 h-4 mr-2" />
-                          Invite Friends
-                        </Link>
-                      </Button>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                      {[...Array(8)].map((_, index) => (
-                        <div key={index} className="flex flex-col items-center text-center">
-                          <Avatar className="w-16 h-16 mb-3">
-                            <AvatarFallback className="bg-indian-softPurple text-indian-primary">
-                              {String.fromCharCode(65 + index)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="font-medium text-sm">Student {index + 1}</div>
-                          <div className="text-xs text-gray-500">Department of CS</div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <div className="text-center mt-6">
-                      <Button variant="outline" size="sm">
-                        View All Attendees
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="discussions" className="mt-0">
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <h2 className="text-xl font-semibold mb-6">Event Discussions</h2>
-                    
-                    <div className="space-y-6">
-                      {/* Sample comments */}
-                      <div className="flex gap-4">
-                        <Avatar>
-                          <AvatarFallback className="bg-indian-softPurple text-indian-primary">RS</AvatarFallback>
+                </div>
+              )}
+              
+              {event.speakers && event.speakers.length > 0 && (
+                <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">Speakers</h2>
+                  <div className="space-y-4">
+                    {event.speakers.map((speaker: any, index: number) => (
+                      <div key={index} className="flex items-center">
+                        <Avatar className="mr-3">
+                          <AvatarFallback className="bg-indian-primary text-white">
+                            {speaker.name.split(" ").map((word: string) => word[0]).join("")}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium">Rahul Sharma</span>
-                            <span className="text-xs text-gray-500">2 days ago</span>
-                          </div>
-                          <p className="text-gray-700 text-sm">
-                            This looks amazing! I've been wanting to attend an Arijit Singh concert for years. Can't wait!
-                          </p>
-                          <div className="flex items-center gap-4 mt-2">
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <Heart className="w-3.5 h-3.5" />
-                              <span>12</span>
-                            </button>
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <MessageSquare className="w-3.5 h-3.5" />
-                              <span>Reply</span>
-                            </button>
-                          </div>
+                          <p className="font-medium">{speaker.name}</p>
+                          <p className="text-sm text-gray-500">{speaker.role}</p>
                         </div>
                       </div>
-                      
-                      <div className="flex gap-4">
-                        <Avatar>
-                          <AvatarFallback className="bg-indian-softPurple text-indian-primary">AM</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium">Ananya Mehta</span>
-                            <span className="text-xs text-gray-500">5 days ago</span>
-                          </div>
-                          <p className="text-gray-700 text-sm">
-                            Does anyone know if there's student discount available for this concert?
-                          </p>
-                          <div className="flex items-center gap-4 mt-2">
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <Heart className="w-3.5 h-3.5" />
-                              <span>5</span>
-                            </button>
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <MessageSquare className="w-3.5 h-3.5" />
-                              <span>Reply</span>
-                            </button>
-                          </div>
-                          
-                          {/* Reply */}
-                          <div className="mt-4 pl-6 border-l-2 border-gray-100">
-                            <div className="flex gap-3">
-                              <Avatar className="w-7 h-7">
-                                <AvatarFallback className="text-xs bg-indian-primary text-white">PM</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-sm">Priya Mehta</span>
-                                  <span className="text-xs text-gray-500">3 days ago</span>
-                                </div>
-                                <p className="text-gray-700 text-sm">
-                                  Yes, students get a 20% discount with valid ID. Check with the event organizers at the registration desk.
-                                </p>
-                                <div className="flex items-center gap-4 mt-2">
-                                  <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                                    <Heart className="w-3.5 h-3.5" />
-                                    <span>8</span>
-                                  </button>
-                                  <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                                    <MessageSquare className="w-3.5 h-3.5" />
-                                    <span>Reply</span>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-8 border-t pt-6">
-                      <h3 className="font-medium mb-3">Leave a Comment</h3>
-                      <textarea
-                        className="w-full border rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-indian-primary focus:border-transparent"
-                        rows={3}
-                        placeholder="Share your thoughts about this event..."
-                      ></textarea>
-                      <div className="flex justify-end mt-3">
-                        <Button className="bg-indian-primary hover:bg-indian-secondary">
-                          Post Comment
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-            
-            {/* Sidebar */}
-            <div>
-              {/* Registration Status */}
-              <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                {registered ? (
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">You're Registered!</h3>
-                    <p className="text-gray-500 text-sm mb-4">
-                      We've sent the confirmation details to your email.
-                    </p>
-                    <div className="rounded-lg border p-3 bg-gray-50 mb-4">
-                      <div className="flex justify-center">
-                        <QrCode className="w-32 h-32 text-gray-800" />
-                      </div>
-                      <div className="text-xs text-center text-gray-500 mt-2">
-                        Show this QR code at the venue for check-in
-                      </div>
-                    </div>
-                    <div className="flex justify-center gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full"
-                      >
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Add to Calendar
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full"
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download Ticket
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <h3 className="text-lg font-semibold mb-4">Registration Details</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Status</span>
-                        <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                          {currentEvent.registration.status === "open" ? "Open" : "Coming Soon"}
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Deadline</span>
-                        <span className="font-medium">{currentEvent.registration.deadline}</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Registration Fee</span>
-                        <span className="font-medium">{currentEvent.registration.fee}</span>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Available Seats</span>
-                        <span className="font-medium">250 / 1500</span>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-6">
-                      <Button className="w-full bg-indian-primary hover:bg-indian-secondary">
-                        <Ticket className="w-4 h-4 mr-2" />
-                        Register Now
-                      </Button>
-                      <div className="text-center text-xs text-gray-500 mt-3">
-                        Registrations close on {currentEvent.registration.deadline}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-              
-              {/* Event Organizer */}
-              <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                <h3 className="text-lg font-semibold mb-4">Event Organizer</h3>
-                
-                <div className="flex items-center gap-3 mb-4">
-                  <Avatar className="w-12 h-12">
-                    <AvatarFallback className="bg-indian-primary text-white">
-                      {currentEvent.organizer.split(' ')[0][0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-medium">{currentEvent.organizer}</div>
-                    <div className="text-sm text-gray-500">Event Organizer</div>
+                    ))}
                   </div>
                 </div>
-                
-                <p className="text-sm text-gray-600 mb-4">
-                  We organize cultural events across the university to promote arts and music.
-                </p>
-                
-                <Button variant="outline" size="sm" className="w-full">
-                  View Organizer Profile
-                </Button>
-              </div>
-              
-              {/* Event Location */}
-              <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                <h3 className="text-lg font-semibold mb-4">Event Location</h3>
-                
-                <div className="rounded-lg overflow-hidden h-[200px] bg-gray-100 mb-4">
-                  {/* Map placeholder - In a real app, this would be an actual map */}
-                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                    <MapPin className="w-8 h-8 text-gray-400" />
-                  </div>
-                </div>
-                
-                <div className="font-medium mb-1">{currentEvent.location}</div>
-                <p className="text-sm text-gray-600 mb-4">
-                  University Campus,<br />
-                  Sector 16C, New Delhi,<br />
-                  India - 110001
-                </p>
-                
-                <Button variant="outline" size="sm" className="w-full">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Get Directions
-                </Button>
-              </div>
-              
-              {/* Rating & Reviews */}
-              <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
-                <h3 className="text-lg font-semibold mb-4">Ratings & Reviews</h3>
-                
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="text-3xl font-bold">4.8</div>
-                  <div>
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`w-4 h-4 ${i < 4 ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}`} />
-                      ))}
-                    </div>
-                    <div className="text-sm text-gray-500">Based on 24 reviews</div>
-                  </div>
-                </div>
-                
-                <Button variant="outline" size="sm" className="w-full">
-                  See All Reviews
-                </Button>
-              </div>
-              
-              {/* Related Events */}
-              <div className="bg-white rounded-lg shadow-sm border p-6">
-                <h3 className="text-lg font-semibold mb-4">Related Events</h3>
-                
-                <div className="space-y-4">
-                  {relatedEvents.map((event) => (
-                    <Link to={`/events/${event.id}`} key={event.id} className="flex gap-3 group">
-                      <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                        <img
-                          src={event.image}
-                          alt={event.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900 group-hover:text-indian-primary transition-colors">
-                          {event.title}
-                        </h4>
-                        <div className="text-xs text-gray-500">{event.date}</div>
-                        <div className="text-xs text-gray-500">{event.location}</div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                
-                <div className="mt-4 text-center">
-                  <Button variant="link" size="sm" asChild className="text-indian-primary">
-                    <Link to="/events?category=music">View All Music Events</Link>
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

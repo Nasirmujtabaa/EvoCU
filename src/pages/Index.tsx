@@ -1,16 +1,12 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Calendar, 
   Check, 
   ChevronRight, 
   Clock, 
-  Search, 
-  Shield, 
-  Wifi, 
-  Share2,
-  Users,
+  Users, 
   Music,
   Code,
   Paintbrush,
@@ -18,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
@@ -29,14 +26,15 @@ const featuredEvents = [
   {
     id: "1",
     title: "CPL (Chanakya Premier League)",
-    date: "April 15, 2025",
+    date: "April 10-24, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/54d6dc2e-f4d0-4a6d-a705-3facf3eb94c8.png",
+    image: "/lovable-uploads/78c51d2b-62e0-4f69-a05b-b457cf03c55f.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
-    featured: true
+    featured: true,
+    price: "₹200"
   },
   {
     id: "2",
@@ -44,11 +42,12 @@ const featuredEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/8375f1c6-6533-40ff-b2ef-df2485f63196.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
-    featured: false
+    featured: false,
+    price: "₹500"
   },
   {
     id: "3",
@@ -56,11 +55,12 @@ const featuredEvents = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: "/lovable-uploads/eba1bc3c-c440-42da-90cd-fa7a7f977515.png",
+    image: "/lovable-uploads/f4058195-637f-4050-b977-658d07522ace.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
-    featured: false
+    featured: false,
+    price: "Free"
   }
 ];
 
@@ -91,6 +91,24 @@ const testimonials = [
 
 const Index = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      // Store email in localStorage to potentially use it during login
+      localStorage.setItem("subscribedEmail", email);
+      // Reset form
+      setEmail("");
+      // Show success toast
+      toast({
+        title: "Subscription successful!",
+        description: "Please login or create an account to continue.",
+      });
+      // Redirect to login page
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -98,7 +116,7 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 rangoli-pattern"></div>
+        <div className="absolute inset-0 rangoli-pattern opacity-50"></div>
         <div className="container mx-auto px-4 relative">
           <div className="flex flex-col lg:flex-row items-center gap-10">
             <div className="flex-1 text-center lg:text-left animate-fade-in">
@@ -148,7 +166,7 @@ const Index = () => {
             
             <div className="flex-1 lg:flex lg:justify-end">
               <img 
-                src="/lovable-uploads/70d9ecd2-403a-481c-970b-82646d3e51f9.png" 
+                src="/lovable-uploads/8375f1c6-6533-40ff-b2ef-df2485f63196.png" 
                 alt="Students enjoying an event" 
                 className="rounded-lg shadow-xl max-w-full h-auto animate-scale-in"
               />
@@ -259,7 +277,7 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard
-              icon={<Search className="w-6 h-6" />}
+              icon={<Calendar className="w-6 h-6" />}
               title="Smart Search"
               description="Find events quickly with our powerful search and filtering system."
             />
@@ -338,18 +356,19 @@ const Index = () => {
           </div>
           
           <div className="max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
               <Input 
                 type="email" 
                 placeholder="Enter your email" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <Button className="bg-white text-indian-primary hover:bg-white/90 whitespace-nowrap">
+              <Button type="submit" className="bg-white text-indian-primary hover:bg-white/90 whitespace-nowrap">
                 Get Started
               </Button>
-            </div>
+            </form>
             <p className="text-sm text-white/80 mt-3 text-center">
               By signing up, you agree to our <Link to="/terms" className="underline">Terms</Link> and <Link to="/privacy" className="underline">Privacy Policy</Link>
             </p>

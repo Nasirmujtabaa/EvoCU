@@ -8,7 +8,6 @@ import {
   ChevronDown,
   Menu,
   MessageSquare,
-  Search,
   User,
   LogOut,
 } from "lucide-react";
@@ -19,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 
 const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
@@ -92,7 +90,7 @@ const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+              src="/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png" 
               alt="EvoCU Logo" 
               className="w-10 h-10"
             />
@@ -145,13 +143,6 @@ const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
             <>
-              <div className="relative hidden md:block">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search events..."
-                  className="w-[200px] pl-8 rounded-full bg-gray-50"
-                />
-              </div>
               <Button variant="ghost" size="icon" className="hidden md:flex">
                 <Bell className="w-5 h-5" />
               </Button>
@@ -242,7 +233,7 @@ const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
           <div className="flex items-center justify-between p-4 border-b">
             <Link to="/" className="flex items-center gap-2">
               <img 
-                src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+                src="/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png" 
                 alt="EvoCU Logo" 
                 className="w-10 h-10"
               />
@@ -287,13 +278,6 @@ const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
                 </div>
               </div>
             ) : null}
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search events..."
-                className="w-full pl-8 bg-gray-50"
-              />
-            </div>
             <nav className="flex flex-col py-4 space-y-2">
               <Link
                 to="/"

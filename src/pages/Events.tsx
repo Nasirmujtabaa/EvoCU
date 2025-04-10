@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, Filter, Check, X, Calendar } from "lucide-react";
+import { Filter, Check, X, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,14 +28,15 @@ const allEvents = [
   {
     id: "1",
     title: "CPL (Chanakya Premier League)",
-    date: "April 15, 2025",
+    date: "April 10-24, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/54d6dc2e-f4d0-4a6d-a705-3facf3eb94c8.png",
+    image: "/lovable-uploads/78c51d2b-62e0-4f69-a05b-b457cf03c55f.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
-    featured: true
+    featured: true,
+    price: "₹200"
   },
   {
     id: "2",
@@ -44,11 +44,12 @@ const allEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/8375f1c6-6533-40ff-b2ef-df2485f63196.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
-    featured: false
+    featured: false,
+    price: "₹500"
   },
   {
     id: "3",
@@ -56,11 +57,12 @@ const allEvents = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: "/lovable-uploads/eba1bc3c-c440-42da-90cd-fa7a7f977515.png",
+    image: "/lovable-uploads/f4058195-637f-4050-b977-658d07522ace.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
-    featured: false
+    featured: false,
+    price: "Free"
   },
   {
     id: "4",
@@ -68,11 +70,12 @@ const allEvents = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: "/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png",
+    image: "/lovable-uploads/b9903d66-1f57-4615-8d26-e453321df716.png",
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
-    featured: false
+    featured: false,
+    price: "₹100"
   },
   {
     id: "5",
@@ -80,11 +83,12 @@ const allEvents = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: "/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png",
+    image: "/lovable-uploads/5cb5426c-342a-47a2-a5e4-bf0c6d371335.png",
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
-    featured: false
+    featured: false,
+    price: "Free"
   },
   {
     id: "6",
@@ -96,7 +100,8 @@ const allEvents = [
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 600,
-    featured: false
+    featured: false,
+    price: "₹150"
   },
   {
     id: "7",
@@ -104,11 +109,12 @@ const allEvents = [
     date: "May 20, 2025",
     time: "10:00 AM",
     location: "University Convention Center",
-    image: "/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png",
+    image: "/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png",
     category: "Tech",
     organizer: "Career Services",
     attendees: 720,
-    featured: false
+    featured: false,
+    price: "Free"
   },
   {
     id: "8",
@@ -116,11 +122,12 @@ const allEvents = [
     date: "April 25, 2025",
     time: "6:30 PM",
     location: "Student Center",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/6173ca42-8b57-43dc-857e-c3a6a6cd6bb1.png",
     category: "Cultural",
     organizer: "Literary Club",
     attendees: 180,
-    featured: false
+    featured: false,
+    price: "₹50"
   }
 ];
 
@@ -142,7 +149,6 @@ const Events = () => {
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   
   useEffect(() => {
-    // Check for category filter in URL
     const categoryParam = searchParams.get("category");
     if (categoryParam) {
       setSelectedCategories([categoryParam]);
@@ -150,10 +156,8 @@ const Events = () => {
   }, [searchParams]);
   
   useEffect(() => {
-    // Apply filters
     let filtered = [...allEvents];
     
-    // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(event => 
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -162,19 +166,16 @@ const Events = () => {
       );
     }
     
-    // Filter by categories
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(event => 
-        selectedCategories.includes(event.category.toLowerCase())
+        selectedCategories.some(cat => event.category.toLowerCase().includes(cat))
       );
     }
     
-    // Filter by attendee range
     filtered = filtered.filter(event => 
       event.attendees >= attendeeRange[0] && event.attendees <= attendeeRange[1]
     );
     
-    // Sort events
     switch (sortBy) {
       case "date-asc":
         filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -202,7 +203,6 @@ const Events = () => {
   const handleCategoryFilter = (categories: string[]) => {
     setSelectedCategories(categories);
     
-    // Update URL with category filter
     if (categories.length === 1) {
       setSearchParams({ category: categories[0] });
     } else if (categories.length === 0) {
