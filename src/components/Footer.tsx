@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -75,7 +76,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin size={20} className="shrink-0 text-indian-primary" />
                 <span className="text-gray-300">
-                  University Campus, Sector 16C, Chanakya University, New Delhi
+                  University Campus, Rural Bangalore, Chanakya University
                 </span>
               </div>
               <div className="flex items-center space-x-3">
@@ -84,7 +85,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={20} className="shrink-0 text-indian-primary" />
-                <span className="text-gray-300">support@utsavsarthi.edu</span>
+                <span className="text-gray-300">support@evocu.edu</span>
               </div>
             </div>
           </div>

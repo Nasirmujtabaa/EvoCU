@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -6,8 +7,6 @@ import {
   ChevronRight, 
   Clock, 
   Search, 
-  QrCode, 
-  Bell, 
   Shield, 
   Wifi, 
   Share2,
@@ -33,7 +32,7 @@ const featuredEvents = [
     date: "April 15, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/8d2576ba-043f-4212-a58c-49ecd6999f55.png",
+    image: "/lovable-uploads/54d6dc2e-f4d0-4a6d-a705-3facf3eb94c8.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
@@ -70,21 +69,21 @@ const testimonials = [
   {
     content: "Organizing our department's annual tech fest was a breeze with EvoCU. The automated notifications and attendance tracking saved us countless hours!",
     author: {
-      name: "Rahul Sharma",
+      name: "Rahul Nair",
       role: "CS Department Head"
     }
   },
   {
     content: "As a student event coordinator, this platform has been a game-changer. I can now focus on making events memorable rather than getting lost in paperwork!",
     author: {
-      name: "Priya Patel",
+      name: "Priya Pusha",
       role: "Student Council President"
     }
   },
   {
     content: "The real-time attendance tracking helped us accurately measure student engagement. It's revolutionized how we plan and improve our cultural events.",
     author: {
-      name: "Dr. Anjali Singh",
+      name: "Dr. Akkash",
       role: "Cultural Affairs Director"
     }
   }
@@ -272,13 +271,13 @@ const Index = () => {
             />
             
             <FeatureCard
-              icon={<QrCode className="w-6 h-6" />}
-              title="QR Check-in"
-              description="Hassle-free attendance tracking with QR code scanning."
+              icon={<Users className="w-6 h-6" />}
+              title="Easy Check-in"
+              description="Hassle-free attendance tracking with simple check-in process."
             />
             
             <FeatureCard
-              icon={<Bell className="w-6 h-6" />}
+              icon={<Calendar className="w-6 h-6" />}
               title="Notifications"
               description="Get timely reminders and updates about upcoming events."
             />

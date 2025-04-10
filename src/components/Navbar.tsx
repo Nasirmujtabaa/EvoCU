@@ -1,14 +1,16 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Bell,
   Calendar,
   ChevronDown,
   Menu,
+  MessageSquare,
   Search,
   User,
+  LogOut,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -18,9 +20,71 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
-const Navbar = ({ loggedIn = false }) => {
+const Navbar = ({ loggedIn: propsLoggedIn = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(propsLoggedIn);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check login status from localStorage
+    const storedLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const storedUserRole = localStorage.getItem("userRole");
+    const storedUserName = localStorage.getItem("userName");
+    const storedUserEmail = localStorage.getItem("userEmail");
+    
+    setIsLoggedIn(propsLoggedIn || storedLoggedIn);
+    setUserRole(storedUserRole);
+    setUserName(storedUserName);
+    setUserEmail(storedUserEmail);
+    
+    // Add event listener for storage changes
+    const handleStorageChange = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+      setUserRole(localStorage.getItem("userRole"));
+      setUserName(localStorage.getItem("userName"));
+      setUserEmail(localStorage.getItem("userEmail"));
+    };
+    
+    window.addEventListener("storage", handleStorageChange);
+    
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [propsLoggedIn]);
+  
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    
+    // Update state
+    setIsLoggedIn(false);
+    setUserRole(null);
+    setUserName(null);
+    setUserEmail(null);
+    
+    // Show toast
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    
+    // Navigate to home
+    navigate("/");
+  };
+  
+  const getInitials = () => {
+    if (!userName) return "EC";
+    return userName.split(" ").map(n => n[0]).join("").toUpperCase();
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
@@ -65,6 +129,12 @@ const Navbar = ({ loggedIn = false }) => {
             Calendar
           </Link>
           <Link
+            to="/social-feed"
+            className="px-3 py-2 text-sm transition-colors rounded-md hover:bg-gray-100"
+          >
+            Social Feed
+          </Link>
+          <Link
             to="/support"
             className="px-3 py-2 text-sm transition-colors rounded-md hover:bg-gray-100"
           >
@@ -73,7 +143,7 @@ const Navbar = ({ loggedIn = false }) => {
         </nav>
 
         <div className="flex items-center gap-2">
-          {loggedIn ? (
+          {isLoggedIn ? (
             <>
               <div className="relative hidden md:block">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
@@ -96,32 +166,51 @@ const Navbar = ({ loggedIn = false }) => {
                   >
                     <Avatar className="w-8 h-8 border">
                       <AvatarFallback className="bg-indian-primary text-white">
-                        EC
+                        {getInitials()}
                       </AvatarFallback>
                     </Avatar>
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem className="flex flex-col items-start w-full">
+                    <span className="font-semibold">{userName || "User"}</span>
+                    <span className="text-xs text-gray-500">{userEmail || "user@example.com"}</span>
+                    <span className="mt-1 text-xs px-2 py-0.5 bg-gray-100 rounded-full">
+                      {userRole === "organizer" ? "Organizer" : "User"}
+                    </span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link to="/profile" className="flex items-center w-full">
+                      <User className="w-4 h-4 mr-2" />
                       My Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link to="/my-events" className="flex items-center w-full">
+                      <Calendar className="w-4 h-4 mr-2" />
                       My Events
                     </Link>
                   </DropdownMenuItem>
+                  {userRole === "organizer" && (
+                    <DropdownMenuItem>
+                      <Link to="/create-event" className="flex items-center w-full">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Create Event
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem>
                     <Link to="/settings" className="flex items-center w-full">
+                      <User className="w-4 h-4 mr-2" />
                       Settings
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link to="/logout" className="flex items-center w-full">
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <div className="flex items-center w-full">
+                      <LogOut className="w-4 h-4 mr-2" />
                       Logout
-                    </Link>
+                    </div>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -182,16 +271,19 @@ const Navbar = ({ loggedIn = false }) => {
             </Button>
           </div>
           <div className="flex flex-col flex-1 p-4 gap-4">
-            {loggedIn ? (
+            {isLoggedIn ? (
               <div className="flex items-center gap-4 pb-4 border-b">
                 <Avatar className="w-10 h-10 border">
                   <AvatarFallback className="bg-indian-primary text-white">
-                    EC
+                    {getInitials()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-medium">User Name</div>
-                  <div className="text-sm text-gray-500">student@email.com</div>
+                  <div className="font-medium">{userName || "User"}</div>
+                  <div className="text-sm text-gray-500">{userEmail || "user@example.com"}</div>
+                  <div className="mt-1 text-xs px-2 py-0.5 bg-gray-100 rounded-full inline-block">
+                    {userRole === "organizer" ? "Organizer" : "User"}
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -232,6 +324,16 @@ const Navbar = ({ loggedIn = false }) => {
                 Calendar
               </Link>
               <Link
+                to="/social-feed"
+                className="px-3 py-2 transition-colors rounded-md hover:bg-gray-100"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  Social Feed
+                </div>
+              </Link>
+              <Link
                 to="/support"
                 className="px-3 py-2 transition-colors rounded-md hover:bg-gray-100"
                 onClick={() => setMobileMenuOpen(false)}
@@ -239,7 +341,7 @@ const Navbar = ({ loggedIn = false }) => {
                 Support
               </Link>
             </nav>
-            {!loggedIn && (
+            {!isLoggedIn ? (
               <div className="flex flex-col gap-2 mt-auto">
                 <Button asChild variant="outline">
                   <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
@@ -255,6 +357,18 @@ const Navbar = ({ loggedIn = false }) => {
                   </Link>
                 </Button>
               </div>
+            ) : (
+              <Button 
+                variant="outline" 
+                className="mt-auto border-red-300 text-red-600 hover:bg-red-50"
+                onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
             )}
           </div>
         </div>
