@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, Filter, Check, X, Calendar } from "lucide-react";
+import { Filter, Check, X, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -24,18 +24,19 @@ import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 import EventCategoryFilter from "@/components/EventCategoryFilter";
 
-// Sample events data
+// Sample events data with updated images and dates
 const allEvents = [
   {
     id: "1",
     title: "CPL (Chanakya Premier League)",
-    date: "April 15, 2025",
+    date: "April 10 - April 24, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/54d6dc2e-f4d0-4a6d-a705-3facf3eb94c8.png",
+    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
+    price: "₹200",
     featured: true
   },
   {
@@ -44,10 +45,11 @@ const allEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
+    price: "₹500",
     featured: false
   },
   {
@@ -56,10 +58,11 @@ const allEvents = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: "/lovable-uploads/eba1bc3c-c440-42da-90cd-fa7a7f977515.png",
+    image: "/lovable-uploads/a80a907c-14f5-46ba-8d96-b09d5a2dd296.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
+    price: "Free",
     featured: false
   },
   {
@@ -68,10 +71,11 @@ const allEvents = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: "/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png",
+    image: "/lovable-uploads/37fc0971-ec66-4148-9384-d7e93d4d161e.png",
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
+    price: "₹150",
     featured: false
   },
   {
@@ -80,10 +84,11 @@ const allEvents = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: "/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png",
+    image: "/lovable-uploads/96b786f2-44d2-47dc-9631-a4b2fef6b791.png",
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
+    price: "Free",
     featured: false
   },
   {
@@ -92,10 +97,11 @@ const allEvents = [
     date: "March 10-15, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png",
+    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 600,
+    price: "₹100",
     featured: false
   },
   {
@@ -104,10 +110,11 @@ const allEvents = [
     date: "May 20, 2025",
     time: "10:00 AM",
     location: "University Convention Center",
-    image: "/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png",
+    image: "/lovable-uploads/995ea5fa-8af3-472e-89af-4ac3df57f987.png",
     category: "Tech",
     organizer: "Career Services",
     attendees: 720,
+    price: "Free",
     featured: false
   },
   {
@@ -116,10 +123,11 @@ const allEvents = [
     date: "April 25, 2025",
     time: "6:30 PM",
     location: "Student Center",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/a27254f4-4e58-48a9-8ad9-e043a5f851d4.png",
     category: "Cultural",
     organizer: "Literary Club",
     attendees: 180,
+    price: "₹50",
     featured: false
   }
 ];
@@ -234,10 +242,9 @@ const Events = () => {
             
             <div className="flex gap-3 w-full md:w-auto">
               <div className="relative flex-1 md:w-64">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input 
                   placeholder="Search events" 
-                  className="pl-9"
+                  className=""
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -331,6 +338,7 @@ const Events = () => {
           <div className="mb-6">
             <EventCategoryFilter 
               categories={categories} 
+              selectedCategories={selectedCategories}
               onFilterChange={handleCategoryFilter} 
             />
           </div>

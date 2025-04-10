@@ -1,7 +1,5 @@
 
-import { useState } from "react";
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type Category = {
   id: string;
@@ -11,49 +9,53 @@ type Category = {
 
 type EventCategoryFilterProps = {
   categories: Category[];
-  onFilterChange: (selectedCategories: string[]) => void;
-  className?: string;
+  selectedCategories: string[];
+  onFilterChange: (categories: string[]) => void;
 };
 
 const EventCategoryFilter = ({
   categories,
+  selectedCategories,
   onFilterChange,
-  className,
 }: EventCategoryFilterProps) => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  const toggleCategory = (categoryId: string) => {
-    setSelectedCategories((prev) => {
-      const newSelection = prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId];
-      
-      onFilterChange(newSelection);
-      return newSelection;
-    });
+  const handleCategoryClick = (categoryId: string) => {
+    if (selectedCategories.includes(categoryId)) {
+      // If already selected, remove it
+      onFilterChange(selectedCategories.filter((id) => id !== categoryId));
+    } else {
+      // If not selected, add it
+      onFilterChange([...selectedCategories, categoryId]);
+    }
   };
 
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
-      {categories.map((category) => {
-        const isSelected = selectedCategories.includes(category.id);
-        
-        return (
-          <button
-            key={category.id}
-            onClick={() => toggleCategory(category.id)}
-            className={cn(
-              "inline-flex items-center rounded-full px-3 py-1 text-sm font-medium transition-colors",
-              isSelected
-                ? `${category.color} text-white`
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-            )}
-          >
-            {isSelected && <Check className="w-3.5 h-3.5 mr-1" />}
-            {category.name}
-          </button>
-        );
-      })}
+    <div className="flex flex-wrap gap-3">
+      <Button
+        variant={selectedCategories.length === 0 ? "default" : "outline"}
+        className={
+          selectedCategories.length === 0
+            ? "bg-indian-primary hover:bg-indian-secondary"
+            : ""
+        }
+        onClick={() => onFilterChange([])}
+      >
+        All Events
+      </Button>
+      
+      {categories.map((category) => (
+        <Button
+          key={category.id}
+          variant={selectedCategories.includes(category.id) ? "default" : "outline"}
+          className={`hover:bg-opacity-90 ${
+            selectedCategories.includes(category.id)
+              ? category.color + " text-white"
+              : ""
+          }`}
+          onClick={() => handleCategoryClick(category.id)}
+        >
+          {category.name}
+        </Button>
+      ))}
     </div>
   );
 };

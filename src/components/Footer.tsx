@@ -3,9 +3,38 @@ import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const { toast } = useToast();
+  
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Store the email
+    localStorage.setItem("subscribedEmail", email);
+    
+    // Show success toast
+    toast({
+      title: "Thank you for subscribing!",
+      description: "You'll now receive our latest updates and events.",
+    });
+    
+    // Reset field
+    setEmail("");
+  };
   
   return (
     <footer className="bg-gray-900 text-white">
@@ -14,7 +43,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
               <img 
-                src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+                src="/lovable-uploads/ba648c73-85e0-4488-af76-42b72f407603.png" 
                 alt="EvoCU Logo" 
                 className="w-10 h-10"
               />
@@ -81,7 +110,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={20} className="shrink-0 text-indian-primary" />
-                <span className="text-gray-300">+91 98765 43210</span>
+                <span className="text-gray-300">+919541118287</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={20} className="shrink-0 text-indian-primary" />
@@ -95,15 +124,19 @@ const Footer = () => {
             <p className="text-gray-300 mb-4">
               Stay updated with latest events and announcements
             </p>
-            <div className="space-y-3">
+            <form onSubmit={handleSubscribe} className="space-y-3">
               <Input 
                 placeholder="Your email address" 
                 className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <Button className="w-full bg-indian-primary hover:bg-indian-secondary">
+              <Button type="submit" className="w-full bg-indian-primary hover:bg-indian-secondary">
                 Subscribe
               </Button>
-            </div>
+            </form>
           </div>
         </div>
         

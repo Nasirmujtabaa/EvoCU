@@ -13,6 +13,7 @@ type EventCardProps = {
   image: string;
   category: string;
   organizer: string;
+  price?: string;
   attendees?: number;
   featured?: boolean;
   compact?: boolean;
@@ -27,6 +28,7 @@ const EventCard = ({
   image,
   category,
   organizer,
+  price = "Free",
   attendees,
   featured = false,
   compact = false,
@@ -72,6 +74,15 @@ const EventCard = ({
         )}
         <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/60 to-transparent">
           <Badge className={`${categoryColor}`}>{category}</Badge>
+        </div>
+        <div className="absolute top-2 left-2">
+          <Badge className="bg-indian-primary text-white">{price}</Badge>
+        </div>
+        <div className="absolute top-10 left-2">
+          <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+            <Calendar className="w-3 h-3 mr-1" />
+            <span className="text-xs">{date}</span>
+          </Badge>
         </div>
       </div>
       

@@ -15,6 +15,9 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SocialFeed from "./pages/SocialFeed";
+import About from "./pages/About";
+import Profile from "./pages/Profile";
+import CreateEvent from "./pages/CreateEvent";
 
 const queryClient = new QueryClient();
 
@@ -69,6 +72,17 @@ const App = () => {
               <Route path="/social-feed" element={
                 <ProtectedRoute>
                   <SocialFeed />
+                </ProtectedRoute>
+              } />
+              <Route path="/about" element={<About />} />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/create-event" element={
+                <ProtectedRoute>
+                  <CreateEvent />
                 </ProtectedRoute>
               } />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

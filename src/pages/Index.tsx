@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Calendar, 
   Check, 
@@ -18,24 +18,26 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 import FeatureCard from "@/components/FeatureCard";
 import TestimonialCard from "@/components/TestimonialCard";
 
-// Featured events data
+// Featured events data with updated images and price
 const featuredEvents = [
   {
     id: "1",
     title: "CPL (Chanakya Premier League)",
-    date: "April 15, 2025",
+    date: "April 10 - April 24, 2025",
     time: "9:00 AM",
     location: "University Sports Complex",
-    image: "/lovable-uploads/54d6dc2e-f4d0-4a6d-a705-3facf3eb94c8.png",
+    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
     category: "Sports",
     organizer: "Sports Committee",
     attendees: 850,
+    price: "₹200",
     featured: true
   },
   {
@@ -44,10 +46,11 @@ const featuredEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
+    price: "₹500",
     featured: false
   },
   {
@@ -56,10 +59,11 @@ const featuredEvents = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: "/lovable-uploads/eba1bc3c-c440-42da-90cd-fa7a7f977515.png",
+    image: "/lovable-uploads/a80a907c-14f5-46ba-8d96-b09d5a2dd296.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
+    price: "Free",
     featured: false
   }
 ];
@@ -91,6 +95,33 @@ const testimonials = [
 
 const Index = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Save the email to localStorage for future use
+    localStorage.setItem("subscribedEmail", email);
+    
+    // Show success toast
+    toast({
+      title: "Success!",
+      description: "You've successfully subscribed to our newsletter.",
+    });
+    
+    // Redirect to login
+    navigate("/login");
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -148,8 +179,8 @@ const Index = () => {
             
             <div className="flex-1 lg:flex lg:justify-end">
               <img 
-                src="/lovable-uploads/70d9ecd2-403a-481c-970b-82646d3e51f9.png" 
-                alt="Students enjoying an event" 
+                src="/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png" 
+                alt="Concert scene with audience" 
                 className="rounded-lg shadow-xl max-w-full h-auto animate-scale-in"
               />
             </div>
@@ -338,18 +369,19 @@ const Index = () => {
           </div>
           
           <div className="max-w-md mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
               <Input 
                 type="email" 
                 placeholder="Enter your email" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
-              <Button className="bg-white text-indian-primary hover:bg-white/90 whitespace-nowrap">
+              <Button type="submit" className="bg-white text-indian-primary hover:bg-white/90 whitespace-nowrap">
                 Get Started
               </Button>
-            </div>
+            </form>
             <p className="text-sm text-white/80 mt-3 text-center">
               By signing up, you agree to our <Link to="/terms" className="underline">Terms</Link> and <Link to="/privacy" className="underline">Privacy Policy</Link>
             </p>
