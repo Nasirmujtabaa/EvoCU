@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -26,81 +25,73 @@ import EventCard from "@/components/EventCard";
 import FeatureCard from "@/components/FeatureCard";
 import TestimonialCard from "@/components/TestimonialCard";
 
-// Import the uploaded images
-const headerImage = "public/lovable-uploads/ef443086-ae37-4ba7-8cef-bfee1fc4fdbd.png";
-const musicEventImage = "public/lovable-uploads/2311f71d-3e0f-439e-80b6-47b7777c2386.png";
-const sportsEventImage = "public/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png";
-const techEventImage = "public/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png";
-const culturalEventImage = "public/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png";
-const academicEventImage = "public/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png";
+// Featured events data
+const featuredEvents = [
+  {
+    id: "1",
+    title: "CPL (Chanakya Premier League)",
+    date: "April 15, 2025",
+    time: "9:00 AM",
+    location: "University Sports Complex",
+    image: "/lovable-uploads/8d2576ba-043f-4212-a58c-49ecd6999f55.png",
+    category: "Sports",
+    organizer: "Sports Committee",
+    attendees: 850,
+    featured: true
+  },
+  {
+    id: "2",
+    title: "Arijit Singh Live Concert",
+    date: "April 30, 2025",
+    time: "7:00 PM",
+    location: "University Auditorium",
+    image: "/lovable-uploads/10ac4ea5-29e5-450d-9468-2a35f8909cba.png",
+    category: "Music",
+    organizer: "Cultural Committee",
+    attendees: 1250,
+    featured: false
+  },
+  {
+    id: "3",
+    title: "Annual Hackathon 2025",
+    date: "May 5-6, 2025",
+    time: "8:00 AM",
+    location: "CS Department",
+    image: "/lovable-uploads/eba1bc3c-c440-42da-90cd-fa7a7f977515.png",
+    category: "Tech",
+    organizer: "Technical Committee",
+    attendees: 320,
+    featured: false
+  }
+];
+
+// Testimonials data
+const testimonials = [
+  {
+    content: "Organizing our department's annual tech fest was a breeze with EvoCU. The automated notifications and attendance tracking saved us countless hours!",
+    author: {
+      name: "Rahul Sharma",
+      role: "CS Department Head"
+    }
+  },
+  {
+    content: "As a student event coordinator, this platform has been a game-changer. I can now focus on making events memorable rather than getting lost in paperwork!",
+    author: {
+      name: "Priya Patel",
+      role: "Student Council President"
+    }
+  },
+  {
+    content: "The real-time attendance tracking helped us accurately measure student engagement. It's revolutionized how we plan and improve our cultural events.",
+    author: {
+      name: "Dr. Anjali Singh",
+      role: "Cultural Affairs Director"
+    }
+  }
+];
 
 const Index = () => {
   const [email, setEmail] = useState("");
-
-  // Featured events data
-  const featuredEvents = [
-    {
-      id: "1",
-      title: "Arijit Singh Live Concert",
-      date: "April 15, 2025",
-      time: "7:00 PM",
-      location: "University Auditorium",
-      image: musicEventImage,
-      category: "Music",
-      organizer: "Cultural Committee",
-      attendees: 1250,
-      featured: true
-    },
-    {
-      id: "2",
-      title: "Inter-College Cricket Tournament",
-      date: "March 10-15, 2025",
-      time: "9:00 AM",
-      location: "University Sports Complex",
-      image: sportsEventImage,
-      category: "Sports",
-      organizer: "Sports Committee",
-      attendees: 850,
-      featured: false
-    },
-    {
-      id: "3",
-      title: "Annual Hackathon 2025",
-      date: "May 5-6, 2025",
-      time: "8:00 AM",
-      location: "CS Department",
-      image: techEventImage,
-      category: "Tech",
-      organizer: "Technical Committee",
-      attendees: 320,
-      featured: false
-    }
-  ];
-
-  // Testimonials data
-  const testimonials = [
-    {
-      content: "Organizing our department's annual tech fest was a breeze with Utsav Sarthi. The automated notifications and attendance tracking saved us countless hours!",
-      author: {
-        name: "Rahul Sharma",
-        role: "CS Department Head"
-      }
-    },
-    {
-      content: "As a student event coordinator, this platform has been a game-changer. I can now focus on making events memorable rather than getting lost in paperwork!",
-      author: {
-        name: "Priya Patel",
-        role: "Student Council President"
-      }
-    },
-    {
-      content: "The real-time attendance tracking helped us accurately measure student engagement. It's revolutionized how we plan and improve our cultural events.",
-      author: {
-        name: "Dr. Anjali Singh",
-        role: "Cultural Affairs Director"
-      }
-    }
-  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -142,15 +133,15 @@ const Index = () => {
               
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-indian-primary">100+</p>
+                  <p className="text-3xl font-bold text-indian-primary">10+</p>
                   <p className="text-sm text-gray-600">Monthly Events</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-indian-primary">10K+</p>
+                  <p className="text-3xl font-bold text-indian-primary">2K+</p>
                   <p className="text-sm text-gray-600">Happy Students</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-indian-primary">50+</p>
+                  <p className="text-3xl font-bold text-indian-primary">10+</p>
                   <p className="text-sm text-gray-600">Event Categories</p>
                 </div>
               </div>
@@ -158,7 +149,7 @@ const Index = () => {
             
             <div className="flex-1 lg:flex lg:justify-end">
               <img 
-                src={headerImage} 
+                src="/lovable-uploads/70d9ecd2-403a-481c-970b-82646d3e51f9.png" 
                 alt="Students enjoying an event" 
                 className="rounded-lg shadow-xl max-w-full h-auto animate-scale-in"
               />
@@ -171,7 +162,7 @@ const Index = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Events</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Top Events</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Discover exciting upcoming events happening around your university campus
             </p>

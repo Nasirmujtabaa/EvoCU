@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,10 +12,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-indian-primary text-white">
-                <span className="text-lg font-bold">US</span>
-              </div>
-              <span className="text-xl font-bold">Utsav Sarthi</span>
+              <img 
+                src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+                alt="EvoCU Logo" 
+                className="w-10 h-10"
+              />
+              <span className="text-xl font-bold">EvoCU</span>
             </Link>
             <p className="text-gray-300 mb-6">
               The ultimate event management platform for universities. Organize, attend, and celebrate events effortlessly.
@@ -108,7 +109,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Utsav Sammelan Sarthi. All rights reserved.
+              © {currentYear} EvoCU. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link to="/privacy" className="text-gray-400 text-sm hover:text-indian-primary transition-colors">

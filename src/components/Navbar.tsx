@@ -27,11 +27,13 @@ const Navbar = ({ loggedIn = false }) => {
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-indian-primary text-white">
-              <span className="text-lg font-bold">US</span>
-            </div>
+            <img 
+              src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+              alt="EvoCU Logo" 
+              className="w-10 h-10"
+            />
             <span className="text-xl font-bold text-gray-800">
-              Utsav Sarthi
+              EvoCU
             </span>
           </Link>
         </div>
@@ -94,7 +96,7 @@ const Navbar = ({ loggedIn = false }) => {
                   >
                     <Avatar className="w-8 h-8 border">
                       <AvatarFallback className="bg-indian-primary text-white">
-                        US
+                        EC
                       </AvatarFallback>
                     </Avatar>
                     <ChevronDown className="w-4 h-4" />
@@ -150,10 +152,12 @@ const Navbar = ({ loggedIn = false }) => {
         <div className="fixed inset-0 z-50 flex flex-col bg-white md:hidden">
           <div className="flex items-center justify-between p-4 border-b">
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-indian-primary text-white">
-                <span className="text-lg font-bold">US</span>
-              </div>
-              <span className="text-xl font-bold">Utsav Sarthi</span>
+              <img 
+                src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
+                alt="EvoCU Logo" 
+                className="w-10 h-10"
+              />
+              <span className="text-xl font-bold">EvoCU</span>
             </Link>
             <Button
               variant="ghost"
@@ -182,7 +186,7 @@ const Navbar = ({ loggedIn = false }) => {
               <div className="flex items-center gap-4 pb-4 border-b">
                 <Avatar className="w-10 h-10 border">
                   <AvatarFallback className="bg-indian-primary text-white">
-                    US
+                    EC
                   </AvatarFallback>
                 </Avatar>
                 <div>
