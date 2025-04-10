@@ -10,7 +10,10 @@ import {
   Music,
   Code,
   Paintbrush,
-  Trophy
+  Trophy,
+  ShieldCheck,
+  Wifi as WifiIcon,
+  Share
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -301,19 +304,19 @@ const Index = () => {
             />
             
             <FeatureCard
-              icon={<Shield className="w-6 h-6" />}
+              icon={<ShieldCheck className="w-6 h-6" />}
               title="Secure Data"
               description="Your event data and personal information are always protected."
             />
             
             <FeatureCard
-              icon={<Wifi className="w-6 h-6" />}
+              icon={<WifiIcon className="w-6 h-6" />}
               title="Offline Access"
               description="Access event details even without an internet connection."
             />
             
             <FeatureCard
-              icon={<Share2 className="w-6 h-6" />}
+              icon={<Share className="w-6 h-6" />}
               title="Easy Sharing"
               description="Share event details with friends across social platforms."
             />
