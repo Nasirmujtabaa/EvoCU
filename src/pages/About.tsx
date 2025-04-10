@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { GraduationCap, Building, Users, Globe, BookOpen, Award } from 'lucide-react';
+import { Graduation, Building, Users, Globe, BookOpen, Award } from 'lucide-react';
 
 const About = () => {
   return (
@@ -109,7 +109,7 @@ const About = () => {
               
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                  <GraduationCap className="text-indigo-600 h-6 w-6" />
+                  <Graduation className="text-indigo-600 h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Career Fairs</h3>
                 <p className="text-gray-600">
