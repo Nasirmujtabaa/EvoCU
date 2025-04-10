@@ -1,27 +1,11 @@
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { toast } from '@/components/ui/use-toast';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
-  
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      localStorage.setItem("subscribedEmail", email);
-      setEmail("");
-      toast({
-        title: "Subscription successful!",
-        description: "Thank you for subscribing to our newsletter.",
-      });
-    }
-  };
   
   return (
     <footer className="bg-gray-900 text-white">
@@ -30,7 +14,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
               <img 
-                src="/lovable-uploads/2379066d-cae1-4445-8c42-89b77b7c7983.png" 
+                src="/lovable-uploads/f9426261-cd46-40bf-b2af-d3952ab821e2.png" 
                 alt="EvoCU Logo" 
                 className="w-10 h-10"
               />
@@ -97,7 +81,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={20} className="shrink-0 text-indian-primary" />
-                <span className="text-gray-300">+919541118287</span>
+                <span className="text-gray-300">+91 98765 43210</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={20} className="shrink-0 text-indian-primary" />
@@ -111,19 +95,15 @@ const Footer = () => {
             <p className="text-gray-300 mb-4">
               Stay updated with latest events and announcements
             </p>
-            <form onSubmit={handleSubscribe} className="space-y-3">
+            <div className="space-y-3">
               <Input 
                 placeholder="Your email address" 
                 className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
               />
-              <Button type="submit" className="w-full bg-indian-primary hover:bg-indian-secondary">
+              <Button className="w-full bg-indian-primary hover:bg-indian-secondary">
                 Subscribe
               </Button>
-            </form>
+            </div>
           </div>
         </div>
         

@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Calendar, Clock, MapPin, Users, DollarSign } from "lucide-react";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -16,7 +16,6 @@ type EventCardProps = {
   attendees?: number;
   featured?: boolean;
   compact?: boolean;
-  price?: string;
 };
 
 const EventCard = ({
@@ -31,7 +30,6 @@ const EventCard = ({
   attendees,
   featured = false,
   compact = false,
-  price = "Free",
 }: EventCardProps) => {
   let categoryColor = "";
   
@@ -72,15 +70,8 @@ const EventCard = ({
             <Badge className="bg-indian-accent text-indian-primary">Featured</Badge>
           </div>
         )}
-        <div className="absolute top-0 left-0 w-full p-2 flex justify-between items-start">
-          <Badge className="bg-opacity-80 backdrop-blur-sm bg-black text-white flex items-center gap-1">
-            <DollarSign className="w-3 h-3" />
-            {price}
-          </Badge>
+        <div className="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black/60 to-transparent">
           <Badge className={`${categoryColor}`}>{category}</Badge>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full p-2">
-          <Badge className="bg-opacity-80 backdrop-blur-sm bg-white text-gray-800">{date}</Badge>
         </div>
       </div>
       
