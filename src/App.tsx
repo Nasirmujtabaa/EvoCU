@@ -1,98 +1,47 @@
 
-import { StrictMode, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Events from "./pages/Events";
-import EventDetails from "./pages/EventDetails";
-import Calendar from "./pages/Calendar";
-import Support from "./pages/Support";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import SocialFeed from "./pages/SocialFeed";
-import About from "./pages/About";
-import Profile from "./pages/Profile";
-import CreateEvent from "./pages/CreateEvent";
+import Index from "@/pages/Index";
+import About from "@/pages/About";
+import Dashboard from "@/pages/Dashboard";
+import Events from "@/pages/Events";
+import EventDetails from "@/pages/EventDetails";
+import CreateEvent from "@/pages/CreateEvent";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import Profile from "@/pages/Profile";
+import Calendar from "@/pages/Calendar";
+import Support from "@/pages/Support";
+import SocialFeed from "@/pages/SocialFeed";
+import NotFound from "@/pages/NotFound";
+import Settings from "@/pages/Settings";
+import MyEvents from "@/pages/MyEvents";
 
-const queryClient = new QueryClient();
+import "./App.css";
 
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  
-  if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  useEffect(() => {
-    // Check login status on mount and when localStorage changes
-    const checkLoginStatus = () => {
-      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-    };
-    
-    window.addEventListener("storage", checkLoginStatus);
-    checkLoginStatus();
-    
-    return () => {
-      window.removeEventListener("storage", checkLoginStatus);
-    };
-  }, []);
-
+function App() {
   return (
-    <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/events" element={<Events />} />
-              <Route path="/events/:id" element={<EventDetails />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/social-feed" element={
-                <ProtectedRoute>
-                  <SocialFeed />
-                </ProtectedRoute>
-              } />
-              <Route path="/about" element={<About />} />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-              <Route path="/create-event" element={
-                <ProtectedRoute>
-                  <CreateEvent />
-                </ProtectedRoute>
-              } />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </StrictMode>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/events/:id" element={<EventDetails />} />
+        <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/social-feed" element={<SocialFeed />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/my-events" element={<MyEvents />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Toaster />
+    </Router>
   );
-};
+}
 
 export default App;

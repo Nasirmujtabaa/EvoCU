@@ -36,11 +36,12 @@ import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 
 // Import the uploaded images
-const musicEventImage = "public/lovable-uploads/2311f71d-3e0f-439e-80b6-47b7777c2386.png";
+const musicEventImage = "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png"; // Arijit.png
 const sportsEventImage = "public/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png";
 const techEventImage = "public/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png";
-const culturalEventImage = "public/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png";
-const academicEventImage = "public/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png";
+const culturalEventImage = "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png"; // Classical.png
+const academicEventImage = "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png"; // Research.png
+const poetryEventImage = "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png"; // Spoken.png
 
 // Sample chart data
 const eventActivityData = [
@@ -65,18 +66,6 @@ const events = [
     organizer: "Cultural Committee",
     attendees: 1250,
     featured: true
-  },
-  {
-    id: "2",
-    title: "Inter-College Cricket Tournament",
-    date: "March 10-15, 2025",
-    time: "9:00 AM",
-    location: "University Sports Complex",
-    image: sportsEventImage,
-    category: "Sports",
-    organizer: "Sports Committee",
-    attendees: 850,
-    featured: false
   },
   {
     id: "3",
@@ -113,6 +102,19 @@ const events = [
     organizer: "Research Department",
     attendees: 280,
     featured: false
+  },
+  {
+    id: "8",
+    title: "Spoken Word Poetry Night",
+    date: "April 25, 2025",
+    time: "6:30 PM",
+    location: "Student Center",
+    image: poetryEventImage,
+    category: "Cultural",
+    organizer: "Literary Club",
+    attendees: 180,
+    price: "₹50",
+    featured: false
   }
 ];
 
@@ -120,10 +122,10 @@ const events = [
 const upcomingEvents = events.slice(0, 3);
 
 // Sample registered events
-const registeredEvents = [events[0], events[2], events[4]];
+const registeredEvents = [events[0], events[1], events[3]];
 
 // Sample organized events
-const organizedEvents = [events[1], events[3]];
+const organizedEvents = [events[2], events[4]];
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");

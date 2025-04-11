@@ -19,12 +19,13 @@ import { Slider } from "@/components/ui/slider";
 import { DatePicker } from "@/components/ui/date-picker";
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 import EventCategoryFilter from "@/components/EventCategoryFilter";
 
-// Sample events data with updated images and dates
+// Sample events data with updated images
 const allEvents = [
   {
     id: "1",
@@ -37,7 +38,8 @@ const allEvents = [
     organizer: "Sports Committee",
     attendees: 850,
     price: "₹200",
-    featured: true
+    featured: true,
+    status: "ongoing"
   },
   {
     id: "2",
@@ -45,12 +47,13 @@ const allEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
+    image: "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png", // Updated to Arijit.png
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
     price: "₹500",
-    featured: false
+    featured: false,
+    status: "upcoming"
   },
   {
     id: "3",
@@ -63,7 +66,8 @@ const allEvents = [
     organizer: "Technical Committee",
     attendees: 320,
     price: "Free",
-    featured: false
+    featured: false,
+    status: "upcoming"
   },
   {
     id: "4",
@@ -71,12 +75,13 @@ const allEvents = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: "/lovable-uploads/37fc0971-ec66-4148-9384-d7e93d4d161e.png",
+    image: "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png", // Updated to Classical.png
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
     price: "₹150",
-    featured: false
+    featured: false,
+    status: "upcoming"
   },
   {
     id: "5",
@@ -84,25 +89,13 @@ const allEvents = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: "/lovable-uploads/96b786f2-44d2-47dc-9631-a4b2fef6b791.png",
+    image: "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png", // Updated to Research.png
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
     price: "Free",
-    featured: false
-  },
-  {
-    id: "6",
-    title: "Inter-College Cricket Tournament",
-    date: "March 10-15, 2025",
-    time: "9:00 AM",
-    location: "University Sports Complex",
-    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
-    category: "Sports",
-    organizer: "Sports Committee",
-    attendees: 600,
-    price: "₹100",
-    featured: false
+    featured: false,
+    status: "upcoming"
   },
   {
     id: "7",
@@ -115,7 +108,8 @@ const allEvents = [
     organizer: "Career Services",
     attendees: 720,
     price: "Free",
-    featured: false
+    featured: false,
+    status: "upcoming"
   },
   {
     id: "8",
@@ -123,12 +117,41 @@ const allEvents = [
     date: "April 25, 2025",
     time: "6:30 PM",
     location: "Student Center",
-    image: "/lovable-uploads/a27254f4-4e58-48a9-8ad9-e043a5f851d4.png",
+    image: "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png", // Updated to Spoken.png
     category: "Cultural",
     organizer: "Literary Club",
     attendees: 180,
     price: "₹50",
-    featured: false
+    featured: false,
+    status: "upcoming"
+  },
+  {
+    id: "9",
+    title: "Winter Music Festival 2024",
+    date: "January 15-17, 2025",
+    time: "5:00 PM",
+    location: "University Grounds",
+    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
+    category: "Music",
+    organizer: "Cultural Committee",
+    attendees: 1500,
+    price: "₹300",
+    featured: false,
+    status: "previous"
+  },
+  {
+    id: "10",
+    title: "Data Science Workshop",
+    date: "February 25, 2025",
+    time: "9:00 AM",
+    location: "Computer Sciences Building",
+    image: "/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png",
+    category: "Tech",
+    organizer: "AI Club",
+    attendees: 250,
+    price: "Free",
+    featured: false,
+    status: "previous"
   }
 ];
 
@@ -148,6 +171,7 @@ const Events = () => {
   const [attendeeRange, setAttendeeRange] = useState([0, 1500]);
   const [sortBy, setSortBy] = useState("date-asc");
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [currentTab, setCurrentTab] = useState("all");
   
   useEffect(() => {
     // Check for category filter in URL
@@ -160,6 +184,11 @@ const Events = () => {
   useEffect(() => {
     // Apply filters
     let filtered = [...allEvents];
+    
+    // Filter by event status if not 'all'
+    if (currentTab !== "all") {
+      filtered = filtered.filter(event => event.status === currentTab);
+    }
     
     // Filter by search term
     if (searchTerm) {
@@ -205,7 +234,7 @@ const Events = () => {
     
     setFilteredEvents(filtered);
     setIsFilterApplied(searchTerm !== "" || selectedCategories.length > 0 || attendeeRange[0] > 0 || attendeeRange[1] < 1500);
-  }, [searchTerm, selectedCategories, attendeeRange, sortBy, searchParams]);
+  }, [searchTerm, selectedCategories, attendeeRange, sortBy, searchParams, currentTab]);
   
   const handleCategoryFilter = (categories: string[]) => {
     setSelectedCategories(categories);
@@ -342,6 +371,15 @@ const Events = () => {
               onFilterChange={handleCategoryFilter} 
             />
           </div>
+          
+          <Tabs defaultValue="all" className="mb-6" onValueChange={setCurrentTab}>
+            <TabsList className="mb-6">
+              <TabsTrigger value="all">All Events</TabsTrigger>
+              <TabsTrigger value="ongoing">Ongoing Events</TabsTrigger>
+              <TabsTrigger value="upcoming">Upcoming Events</TabsTrigger>
+              <TabsTrigger value="previous">Previous Events</TabsTrigger>
+            </TabsList>
+          </Tabs>
           
           {isFilterApplied && (
             <div className="flex items-center mb-6 gap-3">

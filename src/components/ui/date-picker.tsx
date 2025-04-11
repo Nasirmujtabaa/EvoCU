@@ -16,9 +16,10 @@ export interface DatePickerProps {
   date?: Date
   setDate?: (date?: Date) => void
   className?: string
+  hideTimeSelect?: boolean
 }
 
-export function DatePicker({ date, setDate, className }: DatePickerProps) {
+export function DatePicker({ date, setDate, className, hideTimeSelect = false }: DatePickerProps) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
