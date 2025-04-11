@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { 
-  Calendar as CalendarIcon, 
+  CalendarIcon, 
   Clock, 
   Upload, 
-  Calendar, 
+  Calendar as CalendarLucide, 
   Info, 
   MapPin, 
   Users
@@ -260,7 +260,7 @@ const CreateEvent = () => {
                 {/* Date, Time, Location Section */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-indian-primary" />
+                    <CalendarLucide className="h-5 w-5 text-indian-primary" />
                     <h2 className="text-xl font-semibold">Date, Time & Location</h2>
                   </div>
                   

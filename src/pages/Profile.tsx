@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Camera, Mail, Phone, MapPin, Upload, X, Building, AtSign, User as UserIcon } from "lucide-react";
+import { Camera, Mail, Phone, MapPin, Upload, X, Building, AtSign, User as UserIcon, CalendarIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -434,7 +434,7 @@ const Profile = () => {
                             <div className="p-4">
                               <h3 className="font-semibold text-lg mb-2">{event.title}</h3>
                               <div className="flex items-center text-sm text-gray-600 mb-2">
-                                <Calendar className="w-4 h-4 mr-2 text-indian-primary" />
+                                <CalendarIcon className="w-4 h-4 mr-2 text-indian-primary" />
                                 <span>{event.dateDisplay}</span>
                               </div>
                               <div className="flex justify-between mt-4">
