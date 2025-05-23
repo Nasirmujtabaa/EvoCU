@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { 
@@ -33,22 +32,55 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 
-// Import the uploaded images
-const musicEventImage = "public/lovable-uploads/2311f71d-3e0f-439e-80b6-47b7777c2386.png";
-const sportsEventImage = "public/lovable-uploads/bf7455ed-b4c1-4902-a9b6-d41a0d3ac498.png";
-const techEventImage = "public/lovable-uploads/979d7c16-1c8e-4584-bfb6-f33312cfe3a7.png";
-const culturalEventImage = "public/lovable-uploads/9b443c52-a303-44ee-955d-6816a5395aa8.png";
-const academicEventImage = "public/lovable-uploads/5d040975-9adb-46d8-b90b-7bbf133338b9.png";
-
-// Event data
+// Event data with all events
 const events = [
   {
     id: "1",
+    title: "CPL (Chanakya Premier League)",
+    date: "April 10 - April 24, 2025",
+    time: "9:00 AM - 6:00 PM",
+    location: "University Sports Complex",
+    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
+    category: "Sports",
+    organizer: "Sports Committee",
+    organizerLogo: "",
+    attendees: 850,
+    featured: true,
+    description: `Join us for the most exciting cricket tournament of the year - Chanakya Premier League! Teams from across the university will compete in this thrilling cricket championship.
+
+Experience high-octane cricket action with some of the best college players. The tournament features multiple matches across two weeks with knockout rounds leading to the grand finale.
+
+Food stalls and merchandise will be available throughout the tournament. Come cheer for your favorite teams and witness some spectacular cricket!`,
+    agenda: [
+      { time: "9:00 AM", activity: "Team Registration & Practice" },
+      { time: "10:00 AM", activity: "Opening Ceremony" },
+      { time: "11:00 AM", activity: "First Match Begins" },
+      { time: "2:00 PM", activity: "Lunch Break" },
+      { time: "3:00 PM", activity: "Second Match" },
+      { time: "6:00 PM", activity: "Day Concludes" }
+    ],
+    speakers: [
+      { name: "Rahul Sharma", role: "Tournament Director", image: "" },
+      { name: "Priya Verma", role: "Sports Coordinator", image: "" }
+    ],
+    registration: {
+      status: "open",
+      deadline: "April 5, 2025",
+      fee: "₹2,000 per team"
+    },
+    contact: {
+      name: "Rahul Singh",
+      email: "sports@university.edu",
+      phone: "+91 97654 32109"
+    }
+  },
+  {
+    id: "2",
     title: "Arijit Singh Live Concert",
-    date: "April 15, 2025",
+    date: "April 30, 2025",
     time: "7:00 PM - 10:00 PM",
     location: "University Auditorium",
-    image: musicEventImage,
+    image: "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png",
     category: "Music",
     organizer: "Cultural Committee",
     organizerLogo: "",
@@ -72,7 +104,7 @@ Refreshments will be provided, and merchandise will be available for purchase at
     ],
     registration: {
       status: "open",
-      deadline: "April 10, 2025",
+      deadline: "April 25, 2025",
       fee: "₹1,500 (General), ₹2,500 (VIP)"
     },
     contact: {
@@ -82,46 +114,29 @@ Refreshments will be provided, and merchandise will be available for purchase at
     }
   },
   {
-    id: "2",
-    title: "Inter-College Cricket Tournament",
-    date: "March 10-15, 2025",
-    time: "9:00 AM - 6:00 PM",
-    location: "University Sports Complex",
-    image: sportsEventImage,
-    category: "Sports",
-    organizer: "Sports Committee",
-    organizerLogo: "",
-    attendees: 850,
-    featured: false,
-    description: "Annual inter-college cricket tournament featuring teams from all over the region.",
-    agenda: [],
-    speakers: [],
-    registration: {
-      status: "open",
-      deadline: "February 28, 2025",
-      fee: "₹2,000 per team"
-    },
-    contact: {
-      name: "Rahul Singh",
-      email: "sports@university.edu",
-      phone: "+91 97654 32109"
-    }
-  },
-  {
     id: "3",
     title: "Annual Hackathon 2025",
     date: "May 5-6, 2025",
     time: "8:00 AM - 8:00 PM",
     location: "CS Department",
-    image: techEventImage,
+    image: "/lovable-uploads/a80a907c-14f5-46ba-8d96-b09d5a2dd296.png",
     category: "Tech",
     organizer: "Technical Committee",
     organizerLogo: "",
     attendees: 320,
     featured: false,
-    description: "48-hour coding challenge to solve real-world problems using technology.",
-    agenda: [],
-    speakers: [],
+    description: "48-hour coding challenge to solve real-world problems using technology. Teams will compete to build innovative solutions with mentorship from industry experts.",
+    agenda: [
+      { time: "8:00 AM", activity: "Registration & Team Formation" },
+      { time: "9:00 AM", activity: "Opening Ceremony & Problem Statement" },
+      { time: "10:00 AM", activity: "Hacking Begins" },
+      { time: "6:00 PM", activity: "Day 1 Presentations" },
+      { time: "8:00 PM", activity: "Final Presentations & Judging" }
+    ],
+    speakers: [
+      { name: "Dr. Rajesh Kumar", role: "Tech Lead", image: "" },
+      { name: "Anita Sharma", role: "Industry Mentor", image: "" }
+    ],
     registration: {
       status: "coming_soon",
       deadline: "April 25, 2025",
@@ -132,45 +147,176 @@ Refreshments will be provided, and merchandise will be available for purchase at
       email: "tech@university.edu",
       phone: "+91 95432 10987"
     }
+  },
+  {
+    id: "4",
+    title: "Classical Dance Competition",
+    date: "June 12, 2025",
+    time: "6:00 PM - 9:00 PM",
+    location: "Cultural Center",
+    image: "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png",
+    category: "Cultural",
+    organizer: "Fine Arts Society",
+    organizerLogo: "",
+    attendees: 450,
+    featured: false,
+    description: "Showcase of traditional Indian classical dance forms including Bharatanatyam, Kathak, Odissi, and more. Students will compete in various categories.",
+    agenda: [
+      { time: "5:30 PM", activity: "Registration & Preparation" },
+      { time: "6:00 PM", activity: "Opening Performance" },
+      { time: "6:30 PM", activity: "Competition Begins" },
+      { time: "8:30 PM", activity: "Judges Deliberation" },
+      { time: "9:00 PM", activity: "Award Ceremony" }
+    ],
+    speakers: [
+      { name: "Guru Lakshmi Devi", role: "Classical Dance Expert", image: "" },
+      { name: "Dr. Meera Nair", role: "Judge", image: "" }
+    ],
+    registration: {
+      status: "open",
+      deadline: "June 5, 2025",
+      fee: "₹300 per participant"
+    },
+    contact: {
+      name: "Kavya Menon",
+      email: "cultural@university.edu",
+      phone: "+91 94123 45678"
+    }
+  },
+  {
+    id: "5",
+    title: "Research Symposium",
+    date: "July 7-8, 2025",
+    time: "10:00 AM - 5:00 PM",
+    location: "Central Library",
+    image: "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png",
+    category: "Academic",
+    organizer: "Research Department",
+    organizerLogo: "",
+    attendees: 280,
+    featured: false,
+    description: "Annual research symposium featuring presentations from students and faculty across various disciplines. Poster sessions and networking opportunities included.",
+    agenda: [
+      { time: "9:30 AM", activity: "Registration & Welcome Coffee" },
+      { time: "10:00 AM", activity: "Keynote Address" },
+      { time: "11:00 AM", activity: "Research Presentations" },
+      { time: "1:00 PM", activity: "Lunch & Poster Session" },
+      { time: "2:30 PM", activity: "Panel Discussions" },
+      { time: "5:00 PM", activity: "Closing Ceremony" }
+    ],
+    speakers: [
+      { name: "Dr. Ashish Gupta", role: "Research Director", image: "" },
+      { name: "Prof. Sunita Rao", role: "Keynote Speaker", image: "" }
+    ],
+    registration: {
+      status: "open",
+      deadline: "June 30, 2025",
+      fee: "Free"
+    },
+    contact: {
+      name: "Dr. Vikram Singh",
+      email: "research@university.edu",
+      phone: "+91 98123 45670"
+    }
+  },
+  {
+    id: "6",
+    title: "Technology Career Fair",
+    date: "May 20, 2025",
+    time: "10:00 AM - 4:00 PM",
+    location: "University Convention Center",
+    image: "/lovable-uploads/995ea5fa-8af3-472e-89af-4ac3df57f987.png",
+    category: "Tech",
+    organizer: "Career Services",
+    organizerLogo: "",
+    attendees: 720,
+    featured: false,
+    description: "Connect with top technology companies for internships and full-time opportunities. Resume reviews and networking sessions included.",
+    agenda: [
+      { time: "9:30 AM", activity: "Setup & Registration" },
+      { time: "10:00 AM", activity: "Career Fair Opens" },
+      { time: "12:00 PM", activity: "Lunch & Networking" },
+      { time: "1:00 PM", activity: "Resume Review Sessions" },
+      { time: "3:00 PM", activity: "Company Presentations" },
+      { time: "4:00 PM", activity: "Event Concludes" }
+    ],
+    speakers: [
+      { name: "Rajesh Khanna", role: "Career Counselor", image: "" },
+      { name: "Nisha Agarwal", role: "HR Director", image: "" }
+    ],
+    registration: {
+      status: "open",
+      deadline: "May 15, 2025",
+      fee: "Free"
+    },
+    contact: {
+      name: "Career Services Team",
+      email: "careers@university.edu",
+      phone: "+91 98765 12345"
+    }
+  },
+  {
+    id: "7",
+    title: "Spoken Word Poetry Night",
+    date: "April 25, 2025",
+    time: "6:30 PM - 9:00 PM",
+    location: "Student Center",
+    image: "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png",
+    category: "Cultural",
+    organizer: "Literary Club",
+    organizerLogo: "",
+    attendees: 180,
+    featured: false,
+    description: "An evening of powerful spoken word poetry performances by students and guest artists. Open mic sessions for aspiring poets.",
+    agenda: [
+      { time: "6:00 PM", activity: "Registration & Setup" },
+      { time: "6:30 PM", activity: "Welcome & Introduction" },
+      { time: "7:00 PM", activity: "Featured Performances" },
+      { time: "8:00 PM", activity: "Open Mic Session" },
+      { time: "8:45 PM", activity: "Closing Performance" },
+      { time: "9:00 PM", activity: "Event Ends" }
+    ],
+    speakers: [
+      { name: "Arjun Reddy", role: "Spoken Word Artist", image: "" },
+      { name: "Priya Sharma", role: "Poetry Mentor", image: "" }
+    ],
+    registration: {
+      status: "open",
+      deadline: "April 20, 2025",
+      fee: "₹50"
+    },
+    contact: {
+      name: "Aditi Verma",
+      email: "literary@university.edu",
+      phone: "+91 97123 45678"
+    }
   }
 ];
 
 // Related events data
 const relatedEvents = [
   {
-    id: "7",
+    id: "8",
     title: "AR Rahman Musical Evening",
     date: "September 3, 2025",
     time: "7:30 PM",
     location: "Open Air Theatre",
-    image: musicEventImage,
+    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
     category: "Music",
     organizer: "Cultural Club",
     attendees: 1500,
     featured: true
   },
   {
-    id: "8",
+    id: "9",
     title: "Shankar Mahadevan Fusion Concert",
     date: "October 15, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: musicEventImage,
+    image: "/lovable-uploads/fe8e4541-bd29-47c3-8f3f-323822848d00.png",
     category: "Music",
     organizer: "Music Department",
     attendees: 950,
-    featured: false
-  },
-  {
-    id: "9",
-    title: "Classical Music Workshop",
-    date: "November 10, 2025",
-    time: "10:00 AM",
-    location: "Music Room",
-    image: musicEventImage,
-    category: "Music",
-    organizer: "Fine Arts Society",
-    attendees: 120,
     featured: false
   }
 ];
@@ -543,7 +689,7 @@ const EventDetails = () => {
                             <span className="text-xs text-gray-500">2 days ago</span>
                           </div>
                           <p className="text-gray-700 text-sm">
-                            This looks amazing! I've been wanting to attend an Arijit Singh concert for years. Can't wait!
+                            This looks amazing! Really excited to attend this event.
                           </p>
                           <div className="flex items-center gap-4 mt-2">
                             <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
@@ -554,59 +700,6 @@ const EventDetails = () => {
                               <MessageSquare className="w-3.5 h-3.5" />
                               <span>Reply</span>
                             </button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-4">
-                        <Avatar>
-                          <AvatarFallback className="bg-indian-softPurple text-indian-primary">AM</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium">Ananya Mehta</span>
-                            <span className="text-xs text-gray-500">5 days ago</span>
-                          </div>
-                          <p className="text-gray-700 text-sm">
-                            Does anyone know if there's student discount available for this concert?
-                          </p>
-                          <div className="flex items-center gap-4 mt-2">
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <Heart className="w-3.5 h-3.5" />
-                              <span>5</span>
-                            </button>
-                            <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                              <MessageSquare className="w-3.5 h-3.5" />
-                              <span>Reply</span>
-                            </button>
-                          </div>
-                          
-                          {/* Reply */}
-                          <div className="mt-4 pl-6 border-l-2 border-gray-100">
-                            <div className="flex gap-3">
-                              <Avatar className="w-7 h-7">
-                                <AvatarFallback className="text-xs bg-indian-primary text-white">PM</AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-sm">Priya Mehta</span>
-                                  <span className="text-xs text-gray-500">3 days ago</span>
-                                </div>
-                                <p className="text-gray-700 text-sm">
-                                  Yes, students get a 20% discount with valid ID. Check with the event organizers at the registration desk.
-                                </p>
-                                <div className="flex items-center gap-4 mt-2">
-                                  <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                                    <Heart className="w-3.5 h-3.5" />
-                                    <span>8</span>
-                                  </button>
-                                  <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-indian-primary">
-                                    <MessageSquare className="w-3.5 h-3.5" />
-                                    <span>Reply</span>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -713,7 +806,6 @@ const EventDetails = () => {
                 )}
               </div>
               
-              {/* Event Organizer */}
               <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-4">Event Organizer</h3>
                 
@@ -730,7 +822,7 @@ const EventDetails = () => {
                 </div>
                 
                 <p className="text-sm text-gray-600 mb-4">
-                  We organize cultural events across the university to promote arts and music.
+                  We organize events across the university to promote student engagement and learning.
                 </p>
                 
                 <Button variant="outline" size="sm" className="w-full">
@@ -738,12 +830,10 @@ const EventDetails = () => {
                 </Button>
               </div>
               
-              {/* Event Location */}
               <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-4">Event Location</h3>
                 
                 <div className="rounded-lg overflow-hidden h-[200px] bg-gray-100 mb-4">
-                  {/* Map placeholder - In a real app, this would be an actual map */}
                   <div className="w-full h-full flex items-center justify-center bg-gray-200">
                     <MapPin className="w-8 h-8 text-gray-400" />
                   </div>
@@ -762,7 +852,6 @@ const EventDetails = () => {
                 </Button>
               </div>
               
-              {/* Rating & Reviews */}
               <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
                 <h3 className="text-lg font-semibold mb-4">Ratings & Reviews</h3>
                 
@@ -783,7 +872,6 @@ const EventDetails = () => {
                 </Button>
               </div>
               
-              {/* Related Events */}
               <div className="bg-white rounded-lg shadow-sm border p-6">
                 <h3 className="text-lg font-semibold mb-4">Related Events</h3>
                 
@@ -810,7 +898,7 @@ const EventDetails = () => {
                 
                 <div className="mt-4 text-center">
                   <Button variant="link" size="sm" asChild className="text-indian-primary">
-                    <Link to="/events?category=music">View All Music Events</Link>
+                    <Link to="/events?category=music">View All Events</Link>
                   </Button>
                 </div>
               </div>

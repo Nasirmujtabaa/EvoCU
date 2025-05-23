@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -43,29 +42,31 @@ const culturalEventImage = "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd
 const academicEventImage = "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png"; // Research.png
 const poetryEventImage = "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png"; // Spoken.png
 
-// Sample chart data
-const eventActivityData = [
-  { name: "Jan", events: 15, attendees: 850 },
-  { name: "Feb", events: 20, attendees: 1200 },
-  { name: "Mar", events: 25, attendees: 1500 },
-  { name: "Apr", events: 18, attendees: 1100 },
-  { name: "May", events: 22, attendees: 1350 },
-  { name: "Jun", events: 30, attendees: 1800 },
-];
-
-// Sample events data
+// Updated events data with consistent IDs
 const events = [
   {
     id: "1",
+    title: "CPL (Chanakya Premier League)",
+    date: "April 10 - April 24, 2025",
+    time: "9:00 AM",
+    location: "University Sports Complex",
+    image: "/lovable-uploads/ffa028ae-d707-4b94-a103-3172fdf017de.png",
+    category: "Sports",
+    organizer: "Sports Committee",
+    attendees: 850,
+    featured: true
+  },
+  {
+    id: "2",
     title: "Arijit Singh Live Concert",
-    date: "April 15, 2025",
+    date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: musicEventImage,
+    image: "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
-    featured: true
+    featured: false
   },
   {
     id: "3",
@@ -73,7 +74,7 @@ const events = [
     date: "May 5-6, 2025",
     time: "8:00 AM",
     location: "CS Department",
-    image: techEventImage,
+    image: "/lovable-uploads/a80a907c-14f5-46ba-8d96-b09d5a2dd296.png",
     category: "Tech",
     organizer: "Technical Committee",
     attendees: 320,
@@ -85,7 +86,7 @@ const events = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: culturalEventImage,
+    image: "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png",
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
@@ -97,25 +98,35 @@ const events = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: academicEventImage,
+    image: "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png",
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
     featured: false
   },
   {
-    id: "8",
+    id: "7",
     title: "Spoken Word Poetry Night",
     date: "April 25, 2025",
     time: "6:30 PM",
     location: "Student Center",
-    image: poetryEventImage,
+    image: "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png",
     category: "Cultural",
     organizer: "Literary Club",
     attendees: 180,
     price: "₹50",
     featured: false
   }
+];
+
+// Sample chart data
+const eventActivityData = [
+  { name: "Jan", events: 15, attendees: 850 },
+  { name: "Feb", events: 20, attendees: 1200 },
+  { name: "Mar", events: 25, attendees: 1500 },
+  { name: "Apr", events: 18, attendees: 1100 },
+  { name: "May", events: 22, attendees: 1350 },
+  { name: "Jun", events: 30, attendees: 1800 },
 ];
 
 // Sample upcoming events

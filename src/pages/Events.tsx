@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Filter, Check, X, Calendar } from "lucide-react";
@@ -25,7 +24,7 @@ import Footer from "@/components/Footer";
 import EventCard from "@/components/EventCard";
 import EventCategoryFilter from "@/components/EventCategoryFilter";
 
-// Sample events data with updated images
+// Sample events data with consistent IDs
 const allEvents = [
   {
     id: "1",
@@ -47,7 +46,7 @@ const allEvents = [
     date: "April 30, 2025",
     time: "7:00 PM",
     location: "University Auditorium",
-    image: "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png", // Updated to Arijit.png
+    image: "/lovable-uploads/3c3d4fd7-920f-4e1b-99a2-54c895bdd75b.png",
     category: "Music",
     organizer: "Cultural Committee",
     attendees: 1250,
@@ -75,7 +74,7 @@ const allEvents = [
     date: "June 12, 2025",
     time: "6:00 PM",
     location: "Cultural Center",
-    image: "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png", // Updated to Classical.png
+    image: "/lovable-uploads/c6e29511-8a6b-4618-ae4b-aad484260dd3.png",
     category: "Cultural",
     organizer: "Fine Arts Society",
     attendees: 450,
@@ -89,7 +88,7 @@ const allEvents = [
     date: "July 7-8, 2025",
     time: "10:00 AM",
     location: "Central Library",
-    image: "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png", // Updated to Research.png
+    image: "/lovable-uploads/c3152829-8934-4f64-aba8-e3d957ddd6ea.png",
     category: "Academic",
     organizer: "Research Department",
     attendees: 280,
@@ -98,7 +97,7 @@ const allEvents = [
     status: "upcoming"
   },
   {
-    id: "7",
+    id: "6",
     title: "Technology Career Fair",
     date: "May 20, 2025",
     time: "10:00 AM",
@@ -112,12 +111,12 @@ const allEvents = [
     status: "upcoming"
   },
   {
-    id: "8",
+    id: "7",
     title: "Spoken Word Poetry Night",
     date: "April 25, 2025",
     time: "6:30 PM",
     location: "Student Center",
-    image: "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png", // Updated to Spoken.png
+    image: "/lovable-uploads/45762d39-29dd-4a67-8bc0-affaae8004bc.png",
     category: "Cultural",
     organizer: "Literary Club",
     attendees: 180,
@@ -126,7 +125,7 @@ const allEvents = [
     status: "upcoming"
   },
   {
-    id: "9",
+    id: "8",
     title: "Winter Music Festival 2024",
     date: "January 15-17, 2025",
     time: "5:00 PM",
@@ -140,7 +139,7 @@ const allEvents = [
     status: "previous"
   },
   {
-    id: "10",
+    id: "9",
     title: "Data Science Workshop",
     date: "February 25, 2025",
     time: "9:00 AM",
